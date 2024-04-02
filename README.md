@@ -1,4 +1,33 @@
-# NeuS
+# QuasiSim
+
+
+
+overview and make clear what are included in the repo and the future plan
+
+
+## Getting Started
+
+
+TODO: environment setup
+
+(important Diffhand setup) 
+
+TODO: miscs data downloading
+
+TODO: examples data downloading (those you put in the data folder)
+
+TODO: checkpoints downloading
+
+
+## Example Usage
+
+### Stage 1 
+
+
+### stage 2
+
+
+
 
 
 comparisons between optimizing states and optimizing actions (both just for the kinematic hand tracking)

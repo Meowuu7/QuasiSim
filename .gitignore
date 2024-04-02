@@ -15,6 +15,7 @@ __pycache__/
 *.ply
 
 
+#### old files ####
 exp_runner_arti_*
 
 exp_runner.py
@@ -25,12 +26,17 @@ get-pip.py
 
 test.py
 
+
+#### old scripts and data&exp folders ###
 scripts/
 confs/
 data/
 ckpts/
 exp/
 uni_rep/
+
+*/*_local.sh
+*/*_local.conf
 
 # Distribution / packaging
 .Python

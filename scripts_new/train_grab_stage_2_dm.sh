@@ -22,6 +22,7 @@ export mode="train_diffhand_model"
 ## optimize for the manipulatable hand actions ###
 # export mode="train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab_redmax_acts"
 
+### xxx ###
 
 
 export conf=dyn_grab_arti_shadow_diffhand.conf
