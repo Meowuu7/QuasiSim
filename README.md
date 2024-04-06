@@ -34,10 +34,10 @@ TODO: examples data downloading (those you put in the data folder)
 Download [pre-optimized checkpoints](https://1drv.ms/f/s!AgSPtac7QUbHgUNU7vF8a7V0WS9t?e=lp5GSU) and organize them the same way as we do in OnDrive. The expected file structure is as follows: 
 ```shell
 ckpts
- |_grab
-   |_102
-     |_xxx1.pt
-     |_xxx2.pt
+ |-- grab
+   |-- 102
+     |-- xxx1.pt
+     |-- xxx2.pt
      ...
 ```
 
