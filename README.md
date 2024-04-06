@@ -14,7 +14,7 @@ TODO: environment setup
 (important Diffhand setup) 
 
 Install `torch_cluster`:
-```bash
+```shell
 mkdir whls
 cd whls
 wget https://data.pyg.org/whl/torch-2.2.0%2Bcu121/torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
@@ -52,7 +52,7 @@ This stage is divided into three steps as described follows.
 **Step 1: Optimizing for a dynamic simulated MANO hand trajectory**
 
 In this step, we optimize for a control trajectory for the dynamic MANO hand model to track the reference manipulation. Run the following commands sequentially:
-```bash
+```shell
 bash scripts_new/train_grab_mano.sh
 bash scripts_new/train_grab_mano_wreact.sh
 bash scripts_new/train_grab_mano_wreact_optacts.sh
@@ -61,7 +61,7 @@ bash scripts_new/train_grab_mano_wreact_optacts.sh
 **Step 2: Optimizing for a control trajectory for the point set constructed from the MANO hand** 
 
 Run the following four commands sequentially for this step: 
-```bash
+```shell
 bash scripts_new/train_grab_pointset_points_dyn_s1.sh
 bash scripts_new/train_grab_pointset_points_dyn_s2.sh
 bash scripts_new/train_grab_pointset_points_dyn_s3.sh
@@ -71,14 +71,14 @@ bash scripts_new/train_grab_pointset_points_dyn_s4.sh
 **Step 3: Optimizing for a kinematic Shadow hand trajectory**
 
 In this step, we optimize for a kinematic Shadow hand trajectory based on the keypoint based correspondences and mesh surface point based correspondences. Execute the following command for this step: 
-```bash
+```shell
 bash scripts_new/train_grab_sparse_retar.sh
 ```
 
 **Step 4: Optimizing for a control trajectory for the point set constructed from the simulated Shadow hand** 
 
 Execute the following commands for this step:
-```bash
+```shell
 bash scripts_new/train_grab_pointset_points_dyn_retar.sh
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
 ```
@@ -91,7 +91,7 @@ bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
 > **Tracking via a contact curriculum.** In this stage, we optimizing for a control trajectory of the simulated Shadow hand to complete the tracking task through a series of contact models. Initially, the contact model is tuned to the sofest level. We then gradually adjust parameters for tuning it to the stiffest level. 
 
 Run the following command: 
-```bash
+```shell
 bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 ```
 
