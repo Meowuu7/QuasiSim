@@ -25,13 +25,25 @@ pip install torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
 
 **Examples data**
 
-TODO: examples data downloading (those you put in the data folder)
+<!-- TODO: examples data downloading (those you put in the data folder) -->
+Download the [example data](https://1drv.ms/f/s!AgSPtac7QUbHgVE5vMBOAUPzxxsV?e=B5V6mo) and organize them in the same way as we do in OnDrive. The expected file structure is as follows: 
+```shell
+data
+ |-- grab
+     |-- 102
+         |-- 102_obj.npy
+         |-- 102_obj.obj
+         |-- 102_sv_dict.npy
+         |-- 102_sv_dict_st_0_ed_108.npy
+     ...
+```
+
 
 
 **Checkpoints**
 
 <!-- TODO: checkpoints downloading -->
-Download [pre-optimized checkpoints](https://1drv.ms/f/s!AgSPtac7QUbHgUNU7vF8a7V0WS9t?e=lp5GSU) and organize them the same way as we do in OnDrive. The expected file structure is as follows: 
+Download [pre-optimized checkpoints](https://1drv.ms/f/s!AgSPtac7QUbHgUNU7vF8a7V0WS9t?e=lp5GSU) and organize them in the same way as we do in OnDrive. The expected file structure is as follows: 
 ```shell
 ckpts
  |-- grab
@@ -53,6 +65,18 @@ Download [rsc.zip](https://1drv.ms/u/s!AgSPtac7QUbHgUKUL6O4E7_0ygNT?e=PZlb0I) an
 
 
 ## Example Usage
+
+<!-- In the current stage, this repo mainly contains source code on the analytical p -->
+We include data, detailed instructions, and result of an example, aiming at present the inverse dynamics problem in the contact-rich manipulation scenario that we can leverage QuasiSim to solve and the optimization process. Currently we release the analytical part of QuasiSim and the first and second optimization stages. The thrid stage along with more examples will be added. 
+
+For the example sequence `data/grab/102` showing a human hand rotating a mouse, the human manipulaton demonstration, tranferred manipulation to the simulated Shadow hand in the QuasiSim's analytical environment, and the manipulation optimized in the Bullet simulator are shown as follows. 
+
+
+|        Human Manipulation        |       Transferred to Shadow         |         Transferred to Shadow in Bullet         |
+| :----------------------: | :---------------------: | :-----------------------: |
+| ![](assets/human-1.gif) | ![](assets/robo-1.gif) | ![](assets/robo-bullet-1.gif) |
+
+The following instructions aims at optimizing for the control trajectory that can drive  the Shadow hand to complete the tracking task (as shown in the middle demo) in the stiffest analytical environment of QuasiSim. 
 
 ### Stage 1
 > **Transferring human demonstrations via point set.** In this stage, we represent the dynamics MANO model and the Shadow model in simulation as parameterized point set. The contact model is tightened to the softest level. The goal is optimizing for a point set trajectory of the Shadow hand to complete the manipulation tracking. 
