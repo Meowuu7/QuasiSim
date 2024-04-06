@@ -30,14 +30,24 @@ TODO: examples data downloading (those you put in the data folder)
 
 **Checkpoints**
 
-TODO: checkpoints downloading
+<!-- TODO: checkpoints downloading -->
+Download [pre-optimized checkpoints](https://1drv.ms/f/s!AgSPtac7QUbHgUNU7vF8a7V0WS9t?e=lp5GSU) and organize them the same way as we do in OnDrive. The expected file structure is as follows: 
+```shell
+ckpts
+ |_grab
+   |_102
+     |_xxx1.pt
+     |_xxx2.pt
+     ...
+```
 
 
 **URDFs and others**
 
-TODO: miscs data downloading
+<!-- TODO: miscs data downloading -->
 
 
+Download [rsc.zip](https://1drv.ms/u/s!AgSPtac7QUbHgUKUL6O4E7_0ygNT?e=PZlb0I) and [raw_data.zip](https://1drv.ms/u/s!AgSPtac7QUbHgUEIHkPdmjmHUMQc?e=Q9IYY1). Extract them in the root folder of the project. 
 
 
 
