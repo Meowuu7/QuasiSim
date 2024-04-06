@@ -11,14 +11,14 @@ export data_case=hand_test_routine_2_light_color_wtime_active_passive
 export trainer=exp_runner_stage_1.py
 
 
-export mode="train_point_set"
+export mode="train_sparse_retar"
 
-export conf=dyn_grab_pointset_points_dyn.conf
+export conf=dyn_grab_sparse_retar.conf
 
 export conf_root="./confs_new"
 
 
-# bash scripts_new/train_grab_pointset_points_dyn.sh
+# bash scripts_new/train_grab_sparse_retar.sh
 
 export cuda_ids="0"
 

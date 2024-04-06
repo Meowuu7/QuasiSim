@@ -216,11 +216,14 @@ class Visual:
         # expand_factor = 0.2
         # nn_expand_pts = 20
         
-        expand_factor = 0.4
-        nn_expand_pts = 40 ### number of the expanded points ### ## points ##
+        # expand_factor = 0.4
+        # nn_expand_pts = 40 ### number of the expanded points ### ## points ##
         
         # expand_factor = 0.2
         # nn_expand_pts = 20 ##
+        
+        expand_factor = 0.1
+        nn_expand_pts = 10 ##
         expand_save_fn = f"{self.mesh_nm}_expanded_pts_factor_{expand_factor}_nnexp_{nn_expand_pts}_new.npy"
         expand_save_fn = os.path.join(self.mesh_root, expand_save_fn) # 
         
