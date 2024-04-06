@@ -9,17 +9,36 @@ overview and make clear what are included in the repo and the future plan
 
 
 ### Environment setup
+
 TODO: environment setup
 
-(important Diffhand setup) 
+<!-- (important Diffhand setup)  -->
 
-Install `torch_cluster`:
+1. Creat a virtual environment and install necessary dependencies
+
+
+
+2. Install `torch_cluster`:
 ```shell
 mkdir whls
 cd whls
 wget https://data.pyg.org/whl/torch-2.2.0%2Bcu121/torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
 pip install torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
 ```
+
+
+3. Setup [DiffHand](https://github.com/eanswer/DiffHand):
+```shell
+cd DiffHand
+cd core
+python setup.py install
+### For testing the installation ###
+cd ..
+cd examples
+python test_redmax.py
+```
+It's better to install it from this project since we have made modifications to support our purpose.
+
 
 ### Get data 
 
