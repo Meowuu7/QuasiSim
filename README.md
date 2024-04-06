@@ -35,9 +35,9 @@ Download [pre-optimized checkpoints](https://1drv.ms/f/s!AgSPtac7QUbHgUNU7vF8a7V
 ```shell
 ckpts
  |-- grab
-   |-- 102
-     |-- xxx1.pt
-     |-- xxx2.pt
+     |-- 102
+         |-- xxx1.pt
+         |-- xxx2.pt
      ...
 ```
 
@@ -62,6 +62,7 @@ This stage is divided into three steps as described follows.
 **Step 1: Optimizing for a dynamic simulated MANO hand trajectory**
 
 In this step, we optimize for a control trajectory for the dynamic MANO hand model to track the reference manipulation. Run the following commands sequentially:
+
 ```shell
 bash scripts_new/train_grab_mano.sh
 bash scripts_new/train_grab_mano_wreact.sh
@@ -71,6 +72,7 @@ bash scripts_new/train_grab_mano_wreact_optacts.sh
 **Step 2: Optimizing for a control trajectory for the point set constructed from the MANO hand** 
 
 Run the following four commands sequentially for this step: 
+
 ```shell
 bash scripts_new/train_grab_pointset_points_dyn_s1.sh
 bash scripts_new/train_grab_pointset_points_dyn_s2.sh
@@ -81,6 +83,7 @@ bash scripts_new/train_grab_pointset_points_dyn_s4.sh
 **Step 3: Optimizing for a kinematic Shadow hand trajectory**
 
 In this step, we optimize for a kinematic Shadow hand trajectory based on the keypoint based correspondences and mesh surface point based correspondences. Execute the following command for this step: 
+
 ```shell
 bash scripts_new/train_grab_sparse_retar.sh
 ```
@@ -88,6 +91,7 @@ bash scripts_new/train_grab_sparse_retar.sh
 **Step 4: Optimizing for a control trajectory for the point set constructed from the simulated Shadow hand** 
 
 Execute the following commands for this step:
+
 ```shell
 bash scripts_new/train_grab_pointset_points_dyn_retar.sh
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
@@ -108,10 +112,6 @@ bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 
 
 
-
-
-
-comparisons between optimizing states and optimizing actions (both just for the kinematic hand tracking)
 
 
 
