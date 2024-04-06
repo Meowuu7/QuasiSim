@@ -12,6 +12,14 @@ TODO: environment setup
 
 (important Diffhand setup) 
 
+Install `torch_cluster`:
+```bash
+mkdir whls
+cd whls
+wget https://data.pyg.org/whl/torch-2.2.0%2Bcu121/torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
+pip install torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
+```
+
 TODO: miscs data downloading
 
 TODO: examples data downloading (those you put in the data folder)
