@@ -47,9 +47,9 @@ conda create -n quasisim python==3.8.8
 conda activate quasisim
 ```
 
-2. Install `torch1.9.0+cu111`
+2. Install `torch2.2.0+cu121`
 ```shell
-pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 pytorch-cuda=12.1 -c pytorch -c nvidia
 ```
 
 
