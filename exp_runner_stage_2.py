@@ -7,11 +7,12 @@ import numpy as np
 import trimesh
 import torch
 import torch.nn.functional as F
-try:
-    from torch.utils.tensorboard import SummaryWriter
-except:
-    SummaryWriter = None
-    pass
+from torch.utils.tensorboard import SummaryWriter
+# try:
+#     from torch.utils.tensorboard import SummaryWriter
+# except:
+#     SummaryWriter = None
+#     pass
 from shutil import copyfile
 from icecream import ic
 from tqdm import tqdm

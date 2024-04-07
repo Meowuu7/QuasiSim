@@ -16,10 +16,11 @@ export trainer=exp_runner_stage_2.py
 export mode="train_manip_acts_params"
 
 
-export conf=dyn_grab_arti_shadow_multi_stages.conf
+# export conf=dyn_grab_arti_shadow_multi_stages.conf
+export conf=dyn_grab_arti_shadow_dm_curriculum.conf
 
 
-# bash scripts_new/train_grab_shadow_multistages.sh
+# bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 
 
 export conf_root="./confs_new"

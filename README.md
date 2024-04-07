@@ -57,8 +57,8 @@ conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 pytorch-cuda=
 ```shell
 mkdir whls
 cd whls
-wget https://data.pyg.org/whl/torch-2.2.0%2Bcu121/torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
-pip install torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
+wget https://data.pyg.org/whl/torch-2.2.0%2Bcu121/torch_cluster-1.6.3%2Bpt22cu121-cp38-cp38-linux_x86_64.whl
+pip install torch_cluster-1.6.3+pt22cu121-cp38-cp38-linux_x86_64.whl
 ```
 
 4. Install other dependences
