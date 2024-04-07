@@ -2,29 +2,58 @@
 
 
 
-overview and make clear what are included in the repo and the future plan
+### [Project](https://meowuu7.github.io/GeneOH-Diffusion/) | [Gradio Demo](https://huggingface.co/spaces/xymeow7/gene-hoi-denoising) | [Video]()
+
+The implementation of the paper [**QuasiSim**](https://meowuu7.git**hub.io/GeneOH-Diffusion/), presenting a parameterized quasi-physical simulator for transferring kinematics-only human manipulation demonstrations to a simulated dexterous robot hand. 
+<!-- presenting a ***generalizable HOI denoising model*** designed to ***curate high-quality interaction data***. -->
 
 
 
 https://github.com/Meowuu7/QuasiSim/assets/50799886/44233442-3382-4de8-8dbc-9e48b2b6c271
 
+The repository contains 
+- Analytical part of the parameterized quasi-physical simulator; 
+- Detailed instructions on the optimization process for a manipulation sequence example (first two stages). 
 
+We will add the remaining code and instructions on the last optimization stage, as well as the data and more manipulation examples. 
+<!-- We will add the data and the evaluation process for the remaining test datasets, as well as the training procedure. These updates are expected to be completed before May 2024. -->
 
 
 ## Getting Started
 
 
+This code was tested on `Ubuntu 20.04.5 LTS` and requires:
+
+* Python 3.8.8
+* conda3 or miniconda3
+* CUDA capable GPU (one is enough)
+
+
 ### Environment setup
 
-TODO: environment setup
+<!-- TODO: environment setup -->
+
+
+
 
 <!-- (important Diffhand setup)  -->
 
 1. Creat a virtual environment and install necessary dependencies
 
+Create a virtual environment
+
+```shell
+conda create -n quasisim python==3.8.8
+conda activate quasisim
+```
+
+2. Install `torch1.9.0+cu111`
+```shell
+pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+```
 
 
-2. Install `torch_cluster`:
+3. Install `torch_cluster`:
 ```shell
 mkdir whls
 cd whls
@@ -32,8 +61,11 @@ wget https://data.pyg.org/whl/torch-2.2.0%2Bcu121/torch_cluster-1.6.3%2Bpt22cu12
 pip install torch_cluster-1.6.3%2Bpt22cu121-cp311-cp311-linux_x86_64.whl
 ```
 
+4. Install other dependences
 
-3. Setup [DiffHand](https://github.com/eanswer/DiffHand):
+
+
+5. Setup [DiffHand](https://github.com/eanswer/DiffHand):
 ```shell
 cd DiffHand
 cd core
