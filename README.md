@@ -208,7 +208,7 @@ bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 
 ## Contact
 
-Please contact [Xueyi Liu](mailto:xymeow7@gmail.com) or create a github issue if you have any questions.
+Please contact xymeow7@gmail.com or create a github issue if you have any questions.
 
 
 ## Bibtex
