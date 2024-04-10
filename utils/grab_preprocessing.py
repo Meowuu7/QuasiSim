@@ -192,8 +192,19 @@ def get_grab_data_dict(data_fn):
     grab_data_dict = np.load(data_fn, allow_pickle=True).item()
     print(f"grab_data_keys: { grab_data_dict.keys()}")
 
+def get_hand_obj_verts_faces_sv_dict(sv_dict_fn):
+    sv_dict = np.load(sv_dict_fn, allow_pickle=True).item()
+    sv_dict = sv_dict['ts_to_hand_obj_verts']
+    for key in sv_dict:
+        data = sv_dict[key]
+        print(f"key: {key}, data: {type(data)}")
 
 if __name__=='__main__':
+    
+    sv_dict_fn = "/data/xueyi/NeuS/exp/hand_test_routine_2_light_color_wtime_active_passive/wmask_reverse_value_totviews_tag_train_retargeted_shadow_hand_seq_102_mano_pointset_acts_optstates_tst_/meshes/hand_obj_verts_faces_sv_dict_00001239.npy"
+    get_hand_obj_verts_faces_sv_dict(sv_dict_fn=sv_dict_fn)
+    exit(0)
+    
     
     
     ## data_fn ## ### that we can use in the GRAB 

@@ -217,6 +217,9 @@ class Visual:
         # nn_expand_pts = 20
         
         # expand_factor = 0.4
+        # nn_expand_pts = 80 ### number of the expanded points ### ## points ##
+        
+        # expand_factor = 0.4
         # nn_expand_pts = 40 ### number of the expanded points ### ## points ##
         
         # expand_factor = 0.2
