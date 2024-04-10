@@ -18515,7 +18515,8 @@ class Runner:
         spring_ks_contact = [4e4, 4e4, 8e4, 8e4, 1e5, 1e5, 2e5, 2e5, 3e5, 3e5, 3.5e5, 3.5e5, 4e5, 4e5, 4e6, 4e6]
         friction_spring_ks_contact = [1e5, 1e5, 2e5, 2e5, 4e5, 4e5, 5e5, 5e5, 6e5, 6e5, 8e5, 8e5, 1e6, 1e6, 1e7, 1e7]
         # exp_nn_iters = [1500, 100, 1500, 100, 1500, 100, 1500, 100, 1500, 100]
-        exp_nn_iters = [1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, ]
+        # exp_nn_iters = [1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, ]
+        exp_nn_iters = [4000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, 1000, 100, ]
         optimizing_rules = [True, False, True, False, True, False, True, False, True, False, True, False, True, False, True, False,]
         
         print(f"exp_tags: {len(exp_tags)}, distance_threshold: {len(distance_threshold)}, spring_ks_contact: {len(spring_ks_contact)}, friction_spring_ks_contact: {len(friction_spring_ks_contact)}, exp_nn_iters: {len(exp_nn_iters)}, optimizing_rules: {len(optimizing_rules)}")
@@ -18745,7 +18746,7 @@ class Runner:
                         act_mesh_pts_dict_to_model = self.timestep_to_active_mesh
 
                     
-                    contact_pairs_set = self.other_bending_network.forward2( input_pts_ts=cur_ts, timestep_to_active_mesh=act_mesh_pts_dict_to_model, timestep_to_passive_mesh=self.timestep_to_passive_mesh, timestep_to_passive_mesh_normals=self.timestep_to_passive_mesh_normals, friction_forces=self.robot_actuator_friction_forces, sampled_verts_idxes=None, reference_mano_pts=None, fix_obj=False, contact_pairs_set=contact_pairs_set)
+                    contact_pairs_set = self.other_bending_network.forward2( input_pts_ts=cur_ts, timestep_to_active_mesh=act_mesh_pts_dict_to_model, timestep_to_passive_mesh=self.timestep_to_passive_mesh, timestep_to_passive_mesh_normals=self.timestep_to_passive_mesh_normals, sampled_verts_idxes=None, reference_mano_pts=None, fix_obj=False, contact_pairs_set=contact_pairs_set)
                     
                     
 

@@ -2,7 +2,7 @@
 
 
 
-### [Project](https://meowuu7.github.io/GeneOH-Diffusion/) | [Gradio Demo](https://huggingface.co/spaces/xymeow7/gene-hoi-denoising) | [Video]()
+### [Project](https://meowuu7.github.io/GeneOH-Diffusion/) | [Gradio Demo](https://huggingface.co/spaces/xymeow7/quasi-physical-sims) | [Video]()
 
 The implementation of the paper [**QuasiSim**](https://meowuu7.git**hub.io/GeneOH-Diffusion/), presenting a parameterized quasi-physical simulator for transferring kinematics-only human manipulation demonstrations to a simulated dexterous robot hand. 
 <!-- presenting a ***generalizable HOI denoising model*** designed to ***curate high-quality interaction data***. -->
@@ -63,6 +63,9 @@ pip install torch_cluster-1.6.3+pt22cu121-cp38-cp38-linux_x86_64.whl
 
 4. Install other dependences
 
+```shell
+pip install -r requirements.txt
+```
 
 
 5. Setup [DiffHand](https://github.com/eanswer/DiffHand):

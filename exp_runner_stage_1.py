@@ -8284,6 +8284,11 @@ class Runner:
         sv_dict_sv_fn = os.path.join(mesh_sv_root_dir, sv_dict_sv_fn)
         np.save(sv_dict_sv_fn, ts_sv_dict)
     
+    
+        sv_dict_sv_fn_ts_to_hand_obj_verts = 'hand_obj_verts_faces_sv_dict_{:0>8d}.npy'.format(self.iter_step)
+        sv_dict_sv_fn_ts_to_hand_obj_verts = os.path.join(mesh_sv_root_dir, sv_dict_sv_fn_ts_to_hand_obj_verts)
+        np.save(sv_dict_sv_fn_ts_to_hand_obj_verts, ts_to_hand_obj_verts)
+    
     def validate_mesh_robo_h(self, ): # validate mesh robo ###
         def merge_meshes(verts_list, faces_list):
             tot_verts_nn = 0

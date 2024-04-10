@@ -26,7 +26,7 @@ export conf=dyn_grab_arti_shadow_dm_curriculum.conf
 export conf_root="./confs_new"
 
 
-export cuda_ids="4"
+export cuda_ids="1"
 
 
 CUDA_VISIBLE_DEVICES=${cuda_ids} python ${trainer} --mode ${mode} --conf ${conf_root}/${conf} --case ${data_case}
