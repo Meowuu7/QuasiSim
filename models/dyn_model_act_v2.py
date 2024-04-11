@@ -157,8 +157,8 @@ class Visual:
         self.visual_rpy = visual_rpy
         self.mesh_nm = geometry_mesh_fn.split("/")[-1].split(".")[0]
         mesh_root = "rsc/mano"
-        if not os.path.exists(mesh_root):
-            mesh_root = "/data/xueyi/diffsim/NeuS/rsc/mano"
+        # if not os.path.exists(mesh_root):
+        #     mesh_root = "/data/xueyi/diffsim/NeuS/rsc/mano"
         if "shadow" in urdf_fn and "left" in urdf_fn:
             mesh_root = "rsc/shadow_hand_description_left"
             if not os.path.exists(mesh_root):
