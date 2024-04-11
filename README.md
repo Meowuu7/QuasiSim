@@ -1,4 +1,4 @@
-# QuasiSim: Parameterized Quasi-Physical Simulators for Dexterous Manipulations Transfer
+# <img src="./assets/icon-2-new.png" width="40" title="1Password"> QuasiSim: Parameterized Quasi-Physical Simulators for Dexterous Manipulations Transfer
 
 
 
