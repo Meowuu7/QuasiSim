@@ -1,15 +1,20 @@
-# QuasiSim
+# QuasiSim: Parameterized Quasi-Physical Simulators for Dexterous Manipulations Transfer
 
 
 
-### [Project](https://meowuu7.github.io/GeneOH-Diffusion/) | [Gradio Demo](https://huggingface.co/spaces/xymeow7/quasi-physical-sims) | [Video]()
 
-The implementation of the paper [**QuasiSim**](https://meowuu7.git**hub.io/GeneOH-Diffusion/), presenting a parameterized quasi-physical simulator for transferring kinematics-only human manipulation demonstrations to a simulated dexterous robot hand. 
+### [Project](https://meowuu7.github.io/QuasiSim/) | [Gradio Demo](https://huggingface.co/spaces/xymeow7/quasi-physical-sims) | [Video](https://youtu.be/Pho3KisCsu4)
+
+The implementation of the paper [**QuasiSim**](https://meowuu7.github.io/QuasiSim/), presenting a parameterized family of quasi-physical simulators for transferring **kinematics-only human manipulation** demonstrations to **dexterous robot hand simulations**. We tackle the optimization challenge posed by the intricate dynamics involved in the dexterous manipulation via gradually solving the control trajectory optimization problem through a physics curriculum. 
+<!-- challenge posed by the -->
+<!-- The inherent difficulties of the task posed by intricate  -->
 <!-- presenting a ***generalizable HOI denoising model*** designed to ***curate high-quality interaction data***. -->
 
 
 
 https://github.com/Meowuu7/QuasiSim/assets/50799886/44233442-3382-4de8-8dbc-9e48b2b6c271
+
+We enable accurately controlling a simulated dexterous robot hand to track complex human manipulations with **changing contact**, **non-trivial object motions**, and **intricate tool-using** in a physically realistic simulated environment. 
 
 The repository contains 
 - Analytical part of the parameterized quasi-physical simulator; 
@@ -127,25 +132,33 @@ Download [rsc.zip](https://1drv.ms/u/s!AgSPtac7QUbHgUKUL6O4E7_0ygNT?e=PZlb0I) an
 ## Example Usage
 
 <!-- In the current stage, this repo mainly contains source code on the analytical p -->
-We include data, detailed instructions, and result of an example, aiming at present the inverse dynamics problem in the contact-rich manipulation scenario that we can leverage QuasiSim to solve and the optimization process. Currently we release the analytical part of QuasiSim and the first and second optimization stages. The thrid stage along with more examples will be added. 
+<!-- We include data, detailed instructions, and result of an example, aiming at present the inverse dynamics problem in the contact-rich manipulation scenario that we can leverage QuasiSim to solve and the optimization process. Currently we release the analytical part of QuasiSim and the first and second optimization stages. The thrid stage along with more examples will be added. 
 
-For the example sequence `data/grab/102` showing a human hand rotating a mouse, the human manipulaton demonstration, tranferred manipulation to the simulated Shadow hand in the QuasiSim's analytical environment, and the manipulation optimized in the Bullet simulator are shown as follows. 
+For the example sequence `data/grab/102` showing a human hand rotating a mouse, the human manipulaton demonstration, tranferred manipulation to the simulated Shadow hand in the QuasiSim's analytical environment, and the manipulation optimized in the Bullet simulator are shown as follows.  -->
+
+We provide the data, detailed instructions, and the results of a specific example with the aim of elucidating the inverse dynamics problem within contact-rich manipulation scenarios, which we address leveraging the physics curriculum programmed from QuasiSim. Currently, we release the analytical part of QuasiSim as well as the first two optimization stages. The thrid stage, alongside with more data and their optimization code will be added. 
+<!-- we are unveiling the analytical component of QuasiSim, as well as the initial and secondary optimization stages. The third stage, along with additional examples, will be forthcoming. -->
+
+In the case of the example sequence `data/grab/102`, which depicts a human hand rotating a mouse, the human manipulation demonstration, transferred manipulation to the simulated Shadow hand in the QuasiSim's analytical environment, and the manipulation optimized in the Bullet simulator are shown as follows. 
+<!-- we present the following progression: demonstration of human manipulation, transfer of manipulation to the simulated Shadow hand within QuasiSim's analytical environment, and optimization of manipulation within the Bullet simulator. -->
 
 
 |        Human Manipulation        |       Transferred to Shadow         |         Transferred to Shadow in Bullet         |
 | :----------------------: | :---------------------: | :-----------------------: |
 | ![](assets/human-1.gif) | ![](assets/robo-1.gif) | ![](assets/robo-bullet-1.gif) |
 
-The following instructions aims at optimizing for the control trajectory that can drive  the Shadow hand to complete the tracking task (as shown in the middle demo) in the stiffest analytical environment of QuasiSim. 
+<!-- The following instructions aims at optimizing for the control trajectory that can drive  the Shadow hand to complete the tracking task (as shown in the middle demo) in the stiffest analytical environment of QuasiSim.  -->
+
+The following instructions aim to optimize the control trajectory to enable the Shadow hand to complete the tracking task, as demonstrated in the middle demo, within the stiffest analytical environment of QuasiSim.
 
 ### Stage 1
-> **Transferring human demonstrations via point set.** In this stage, we represent the dynamics MANO model and the Shadow model in simulation as parameterized point set. The contact model is tightened to the softest level. The goal is optimizing for a point set trajectory of the Shadow hand to complete the manipulation tracking. 
+> **Transferring human demonstrations via point set dynamics.** In this stage, we represent the MANO model and the Shadow model within the simulation as parameterized point sets. The contact model is adjusted to its softest level. The objective is to optimize a trajectory of point sets for the Shadow hand to successfully accomplish manipulation tracking.
 
-This stage is divided into three steps as described follows. 
+This stage is divided into four steps as described below.
 
-**Step 1: Optimizing for a dynamic simulated MANO hand trajectory**
+**Step 1: Optimizing the trajectory of the simulated dynamic MANO hand**
 
-In this step, we optimize for a control trajectory for the dynamic MANO hand model to track the reference manipulation. Run the following commands sequentially:
+In this step, we optimize a control trajectory for the dynamic MANO hand model to track the reference manipulation. Please execute the following commands sequentially:
 
 ```shell
 bash scripts_new/train_grab_mano.sh
@@ -153,9 +166,9 @@ bash scripts_new/train_grab_mano_wreact.sh
 bash scripts_new/train_grab_mano_wreact_optacts.sh
 ```
 
-**Step 2: Optimizing for a control trajectory for the point set constructed from the MANO hand** 
+**Step 2: Optimizing the control trajectory for the point set constructed from the MANO hand** 
 
-Run the following four commands sequentially for this step: 
+Execute the following four commands sequentially for this step:
 
 ```shell
 bash scripts_new/train_grab_pointset_points_dyn_s1.sh
@@ -164,17 +177,19 @@ bash scripts_new/train_grab_pointset_points_dyn_s3.sh
 bash scripts_new/train_grab_pointset_points_dyn_s4.sh
 ```
 
-**Step 3: Optimizing for a kinematic Shadow hand trajectory**
+**Step 3: Optimizing the trajectory of the kinematic Shadow hand**
 
-In this step, we optimize for a kinematic Shadow hand trajectory based on the keypoint based correspondences and mesh surface point based correspondences. Execute the following command for this step: 
+<!-- In this step, we optimize for a kinematic Shadow hand trajectory based on the keypoint based correspondences and mesh surface point based correspondences. Execute the following command for this step:  -->
+
+In this step, we optimize the trajectory of the kinematic Shadow hand based on keypoint-based correspondences and mesh surface point-based correspondences. Execute the following command for this step:
 
 ```shell
 bash scripts_new/train_grab_sparse_retar.sh
 ```
 
-**Step 4: Optimizing for a control trajectory for the point set constructed from the simulated Shadow hand** 
+**Step 4: Optimizing the control trajectory for the point set constructed from the simulated Shadow hand** 
 
-Execute the following commands for this step:
+Please execute the following commands for this step:
 
 ```shell
 bash scripts_new/train_grab_pointset_points_dyn_retar.sh
@@ -186,7 +201,7 @@ bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
 
 
 ### Stage 2
-> **Tracking via a contact curriculum.** In this stage, we optimizing for a control trajectory of the simulated Shadow hand to complete the tracking task through a series of contact models. Initially, the contact model is tuned to the sofest level. We then gradually adjust parameters for tuning it to the stiffest level. 
+> **Tracking via a contact curriculum.**  In this stage, we optimize the control trajectory of the simulated Shadow hand to complete the tracking task through a curriculum of contact models. Initially, the contact model is tuned to the softest level. Subsequently, we gradually adjust parameters to tune it to the stiffest level.
 
 Run the following command: 
 ```shell
@@ -194,6 +209,7 @@ bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 ```
 
 
+<!-- ### Stage 3 -->
 
 
 ## TODOs
@@ -211,7 +227,7 @@ bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 Please contact xymeow7@gmail.com or raise a github issue if you have any questions.
 
 
-## Bibtex
+<!-- ## Bibtex
 If you find this code useful in your research, please cite:
 
 ```bibtex
@@ -221,7 +237,7 @@ If you find this code useful in your research, please cite:
    booktitle={The Twelfth International Conference on Learning Representations},
    year={2024}
 }
-```
+``` -->
 
 
 ## Acknowledgments

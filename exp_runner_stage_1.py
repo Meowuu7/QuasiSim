@@ -56,8 +56,8 @@ class Runner:
             
         
         self.base_exp_dir = self.conf['general.base_exp_dir']
-        if not os.path.exists(self.base_exp_dir):
-            self.base_exp_dir = "/data/xueyi/NeuS/exp/hand_test_routine_2_light_color_wtime_active_passive/wmask"
+        # if not os.path.exists(self.base_exp_dir):
+        #     self.base_exp_dir = "/data/xueyi/NeuS/exp/hand_test_routine_2_light_color_wtime_active_passive/wmask"
         
         print(f"self.base_exp_dir:", self.base_exp_dir)
         self.base_exp_dir = self.base_exp_dir + f"_reverse_value_totviews_tag_{self.conf['general.tag']}"
@@ -573,11 +573,16 @@ class Runner:
             print(f"dataset.obj_idx:", self.conf['dataset.obj_idx'])
             self.obj_idx = self.conf['dataset.obj_idx']
             
-            ###### only for the grab dataset only currently ########
-            GRAB_data_root = "/data1/xueyi/GRAB_extracted_test/train"
-            # /data/xueyi/GRAB/GRAB_extracted_test/train/102_obj.npy
-            if not os.path.exists(GRAB_data_root):
-                GRAB_data_root = "/data/xueyi/GRAB/GRAB_extracted_test/train"
+            # ###### only for the grab dataset only currently ########
+            # GRAB_data_root = "/data1/xueyi/GRAB_extracted_test/train"
+            # # /data/xueyi/GRAB/GRAB_extracted_test/train/102_obj.npy
+            # if not os.path.exists(GRAB_data_root):
+            #     GRAB_data_root = "/data/xueyi/GRAB/GRAB_extracted_test/train"
+                
+                
+            GRAB_data_root = "data/grab"
+            GRAB_data_root = os.path.join(GRAB_data_root, f"{self.obj_idx}")
+            
             
             # self.conf['model.obj_sdf_fn'] = os.path.join(GRAB_data_root, f"{self.obj_idx}_obj.npy")
             # self.conf['model.kinematic_mano_gt_sv_fn'] = os.path.join(GRAB_data_root, f"{self.obj_idx}_sv_dict.npy")
@@ -692,8 +697,6 @@ class Runner:
             self.other_bending_network.timestep_to_torque[i_time_idx] = torch.zeros((3,), dtype=torch.float32).cuda()
             
 
-        # calculate_collision_geometry_bounding_boxes, self.maxx_init_passive_mesh, self.minn_init_passive_mesh #  # the best performed DGrasp-tracking? ##
-        
         ### set initial transformations ###
         if mode in ["train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states_grab", "train_point_set", "train_point_set_retar", "train_point_set_retar_pts", "train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab", "train_finger_kinematics_retargeting_arctic_twohands", "train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_arctic_twohands", "train_real_robot_actions_from_mano_model_rules_shadowhand", "train_redmax_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab", "train_dyn_mano_model_wreact"] and self.bending_net_type == "active_force_field_v18":
             self.other_bending_network.timestep_to_total_def[0] = self.object_transl[0]
@@ -854,12 +857,12 @@ class Runner:
         # #
         # nearest ppont ? 
         init_passive_mesh = self.timestep_to_passive_mesh[0]
-        maxx_init_passive_mesh, _ = torch.max(init_passive_mesh, dim=0) ## (3, )
-        minn_init_passive_mesh, _ = torch.min(init_passive_mesh, dim=0) ## (3, )
+        maxx_init_passive_mesh, _ = torch.max(init_passive_mesh, dim=0)
+        minn_init_passive_mesh, _ = torch.min(init_passive_mesh, dim=0)
         # maxx init passive mesh; minn init passvie mesh ##
         # contact passive mesh #
         self.maxx_init_passive_mesh = maxx_init_passive_mesh
-        self.minn_init_passive_mesh = minn_init_passive_mesh # 
+        self.minn_init_passive_mesh = minn_init_passive_mesh
         
         pass
 
@@ -873,13 +876,7 @@ class Runner:
         
         ''' Loading mano template '''
         mano_hand_template_fn = 'assets/mano_hand_template.obj'
-        if not os.path.exists(mano_hand_template_fn):
-            box_sv_fn = "/data2/xueyi/arctic_processed_data/processed_sv_dicts/s01/box_grab_01_extracted_dict.npy"
-            box_sv_dict = np.load(box_sv_fn, allow_pickle=True).item()
-            mano_hand_faces = box_sv_dict['hand_faces']
-            mano_hand_verts = box_sv_dict['rhand_verts'][0]
-            mano_hand_mesh = trimesh.Trimesh(mano_hand_verts, mano_hand_faces)
-            mano_hand_mesh.export(mano_hand_template_fn)
+        
         mano_hand_temp = trimesh.load(mano_hand_template_fn, force='mesh')
         hand_faces = mano_hand_temp.faces
         self.hand_faces = torch.from_numpy(hand_faces).long().to(self.device)
@@ -1038,7 +1035,6 @@ class Runner:
         sv_fn = self.kinematic_mano_gt_sv_fn
         
         ### get hand faces ###
-        # sv_fn = "/data2/xueyi/arctic_processed_data/processed_sv_dicts/s01/box_grab_01_extracted_dict.npy"
         ''' Loading mano template '''
         mano_hand_template_fn = 'assets/mano_hand_template.obj'
         if not os.path.exists(mano_hand_template_fn):
@@ -1236,14 +1232,7 @@ class Runner:
         
         self.sdf_space_center = center.detach().cpu().numpy()
         self.sdf_space_scale = scale.detach().cpu().numpy()
-        # # sdf_sv_fn = "/data/xueyi/diffsim/NeuS/init_box_mesh.npy"
-        # if not os.path.exists(sdf_sv_fn):
-        #     sdf_sv_fn = "/home/xueyi/diffsim/NeuS/init_box_mesh.npy"
-        # self.obj_sdf = np.load(sdf_sv_fn, allow_pickle=True)
-        # self.sdf_res = self.obj_sdf.shape[0]
-        # print(f"obj_sdf loaded from {sdf_sv_fn} with shape {self.obj_sdf.shape}")
-        
-        
+
         
         
         
@@ -1262,22 +1251,9 @@ class Runner:
     
     
     def load_active_passive_timestep_to_mesh_twohands_arctic(self, ):
-        # sv_fn = "/data1/xueyi/GRAB_extracted_test/test/30_sv_dict.npy"
-        # /data1/xueyi/GRAB_extracted_test/train/20_sv_dict_real_obj.obj # data1
         import utils.utils as utils
         from manopth.manolayer import ManoLayer
-        
-        # mano_hand_template_fn = 'assets/mano_hand_template.obj'
-        # # if not os.path.exists(mano_hand_template_fn):
-        # #     box_sv_fn = "/data2/xueyi/arctic_processed_data/processed_sv_dicts/s01/box_grab_01_extracted_dict.npy"
-        # #     box_sv_dict = np.load(box_sv_fn, allow_pickle=True).item()
-        # #     mano_hand_faces = box_sv_dict['hand_faces']
-        # #     mano_hand_verts = box_sv_dict['rhand_verts'][0]
-        # #     mano_hand_mesh = trimesh.Trimesh(mano_hand_verts, mano_hand_faces)
-        # #     mano_hand_mesh.export(mano_hand_template_fn)
-        # mano_hand_temp = trimesh.load(mano_hand_template_fn, force='mesh')
-        # hand_faces = mano_hand_temp.faces
-        
+
         
         rgt_hand_pkl_fn = "assets/right_20230917_004.pkl"
         data_dict = pkl.load(open(rgt_hand_pkl_fn, "rb"))
@@ -1334,25 +1310,7 @@ class Runner:
         obj_faces = sv_dict['f'][0]
         obj_faces = torch.from_numpy(obj_faces).long().cuda()
         self.obj_faces = obj_faces
-        
-        # obj_verts = sv_dict['verts.object']
-        # minn_verts = np.min(obj_verts, axis=0)
-        # maxx_verts = np.max(obj_verts, axis=0)
-        # extent = maxx_verts - minn_verts
-        # # center_ori = (maxx_verts + minn_verts) / 2
-        # # scale_ori = np.sqrt(np.sum(extent ** 2))
-        # obj_verts = torch.from_numpy(obj_verts).float().cuda()
-        
-        
-        # obj_sv_path = "/data3/datasets/xueyi/arctic/arctic_data/data/meta/object_vtemplates"
-        # obj_name = sv_fn.split("/")[-1].split("_")[0]
-        # obj_mesh_fn = os.path.join(obj_sv_path, obj_name, "mesh.obj")
-        # print(f"loading from {obj_mesh_fn}")
-        # # template_obj_vs, template_obj_fs = trimesh.load(obj_mesh_fn, force='mesh')
-        # template_obj_vs, template_obj_fs = utils.read_obj_file_ours(obj_mesh_fn, sub_one=True)
-        
-        
-        
+
         
         # self.obj_verts = obj_verts
         init_obj_verts = obj_pcs[0]
@@ -6169,22 +6127,6 @@ class Runner:
         self.mano_fingers = [745, 279, 320, 444, 555, 672, 234, 121, 86, 364, 477, 588, 699]
         self.robot_fingers = [6684, 9174, 53, 1623, 3209, 4495, 10028, 8762, 1030, 2266, 3822, 5058, 7074]
         
-        # self.mano_fingers = [745, 279, 320, 444, 555, 672, 234, 121]
-        # self.robot_fingers = [6496, 10128, 53, 1623, 3209, 4495, 9523, 8877]
-        
-        # if self.hand_type == "redmax_hand":
-        #     self.mano_fingers = [745, 279, 320, 444, 555, 672, 234, 121]
-        #     self.robot_fingers = [521, 624, 846, 973, 606, 459, 383, 265]
-        #     self.robot_fingers = [233786, 268323, 183944, 187495, 55902, 166666, 178838, 75173]
-        #     self.robot_fingers = [233786, 251198, 183944, 64195, 55902, 166666, 178838, 75173]
-        #     self.robot_fingers = [14670, 321530, 36939, 125930, 200397, 257721, 333438, 338358]
-            
-            
-        #     # robot fingers ## 
-        #     self.mano_fingers = [279, 320, 444, 555, 672, 234, 121]
-        #     self.robot_fingers = [321530, 36939, 125930, 200397, 257721, 333438, 338358]
-        #     if not os.path.exists("/home/xueyi"):
-        #         self.robot_fingers = [347724, 53224, 128561, 198041, 276858, 340722, 340333]
         
         # self.minn_robo_pts = -0.1
         # self.maxx_robo_pts = 0.2
@@ -6730,9 +6672,11 @@ class Runner:
         if 'model.mano_mult_const_after_cent' in self.conf:
             self.mano_mult_const_after_cent = self.conf['model.mano_mult_const_after_cent']
         
-        mano_to_dyn_corr_pts_idxes_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/nearest_dyn_verts_idxes.npy"
-        if not os.path.exists(mano_to_dyn_corr_pts_idxes_fn):
-            mano_to_dyn_corr_pts_idxes_fn = "/data/xueyi/diffsim/NeuS/rsc/mano/nearest_dyn_verts_idxes.npy"
+        # mano_to_dyn_corr_pts_idxes_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/nearest_dyn_verts_idxes.npy"
+        # if not os.path.exists(mano_to_dyn_corr_pts_idxes_fn):
+        #     mano_to_dyn_corr_pts_idxes_fn = "/data/xueyi/diffsim/NeuS/rsc/mano/nearest_dyn_verts_idxes.npy"
+        
+        mano_to_dyn_corr_pts_idxes_fn = "./assets/nearest_dyn_verts_idxes.npy"
         self.mano_to_dyn_corr_pts_idxes = np.load(mano_to_dyn_corr_pts_idxes_fn, allow_pickle=True)
         self.mano_to_dyn_corr_pts_idxes = torch.from_numpy(self.mano_to_dyn_corr_pts_idxes).long().cuda() 
         
@@ -6785,7 +6729,7 @@ class Runner:
             timestep_to_tot_rot = {}
             timestep_to_tot_trans = {}
             
-            correspondence_pts_idxes = None
+            # correspondence_pts_idxes = None
             # timestep_to_raw_active_meshes, timestep_to_penetration_points, timestep_to_penetration_points_forces
             self.timestep_to_raw_active_meshes = {}
             self.timestep_to_penetration_points = {}
@@ -6803,15 +6747,14 @@ class Runner:
             contact_pairs_set = None
             self.contact_pairs_sets = {}
             
-            # redmax_sim.reset(backward_flag = True)
             
             # tot_grad_qs = []
             
-            robo_intermediates_states = []
+            # robo_intermediates_states = []
             
-            tot_penetration_depth = []
+            # tot_penetration_depth = []
             
-            robo_actions_diff_loss = []
+            # robo_actions_diff_loss = []
             mano_tracking_loss = []
             
             # init global transformations ##
@@ -7094,9 +7037,8 @@ class Runner:
         if 'model.mano_mult_const_after_cent' in self.conf:
             self.mano_mult_const_after_cent = self.conf['model.mano_mult_const_after_cent']
         
-        mano_to_dyn_corr_pts_idxes_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/nearest_dyn_verts_idxes.npy"
-        if not os.path.exists(mano_to_dyn_corr_pts_idxes_fn):
-            mano_to_dyn_corr_pts_idxes_fn = "/data/xueyi/diffsim/NeuS/rsc/mano/nearest_dyn_verts_idxes.npy"
+        
+        mano_to_dyn_corr_pts_idxes_fn = "./assets/nearest_dyn_verts_idxes.npy"
         self.mano_to_dyn_corr_pts_idxes = np.load(mano_to_dyn_corr_pts_idxes_fn, allow_pickle=True)
         self.mano_to_dyn_corr_pts_idxes = torch.from_numpy(self.mano_to_dyn_corr_pts_idxes).long().cuda() 
         
