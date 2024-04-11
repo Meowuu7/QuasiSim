@@ -156,21 +156,21 @@ class Visual:
         self.visual_xyz = visual_xyz
         self.visual_rpy = visual_rpy
         self.mesh_nm = geometry_mesh_fn.split("/")[-1].split(".")[0]
-        mesh_root = "/home/xueyi/diffsim/NeuS/rsc/mano"
+        mesh_root = "rsc/mano"
         if not os.path.exists(mesh_root):
             mesh_root = "/data/xueyi/diffsim/NeuS/rsc/mano"
         if "shadow" in urdf_fn and "left" in urdf_fn:
-            mesh_root = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description_left"
+            mesh_root = "rsc/shadow_hand_description_left"
             if not os.path.exists(mesh_root):
-                mesh_root = "/root/diffsim/quasi-dyn/rsc/shadow_hand_description_left"
+                mesh_root = "rsc/shadow_hand_description_left"
         elif "shadow" in urdf_fn:
-            mesh_root = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description"
+            mesh_root = "rsc/shadow_hand_description"
             if not os.path.exists(mesh_root):
-                mesh_root = "/root/diffsim/quasi-dyn/rsc/shadow_hand_description"
+                mesh_root = "rsc/shadow_hand_description"
         elif "redmax" in urdf_fn:
-            mesh_root = "/home/xueyi/diffsim/NeuS/rsc/redmax_hand"
+            mesh_root = "rsc/redmax_hand"
             if not os.path.exists(mesh_root):
-                mesh_root = "/root/diffsim/quasi-dyn/rsc/redmax_hand"
+                mesh_root = "rsc/redmax_hand"
             
         self.mesh_root = mesh_root
         geometry_mesh_fn = geometry_mesh_fn.replace(".dae", ".obj")
@@ -2080,9 +2080,6 @@ def get_GT_states_data_from_ckpt(ckpt_fn):
         'obj_rot': object_global_orient,
         'obj_trans': object_transl
     }
-    # sv_gt_refereces_fn = "/home/xueyi/diffsim/Control-VAE/Data/ReferenceData/grab_train_split_20_cube_data.npy"
-    # sv_gt_refereces_fn = "/home/xueyi/diffsim/Control-VAE/Data/ReferenceData/grab_train_split_25_ball_data.npy"
-    # sv_gt_refereces_fn = "/home/xueyi/diffsim/Control-VAE/Data/ReferenceData/grab_train_split_54_cylinder_data.npy"
     sv_gt_refereces_fn = "/home/xueyi/diffsim/Control-VAE/Data/ReferenceData/grab_train_split_1_dingshuji_data.npy"
     np.save(sv_gt_refereces_fn, sv_gt_refereces)
     print(f'gt reference data saved to {sv_gt_refereces_fn}')
@@ -2124,7 +2121,7 @@ def scale_and_save_meshes(meshes_folder):
     exit(0)
     
 def scale_and_save_meshes_v2(meshes_folder):
-    # /home/xueyi/diffsim/NeuS/rsc/redmax_hand/meshes/hand/body0_centered_scaled_v2.obj
+    # rsc/redmax_hand/meshes/hand/body0_centered_scaled_v2.obj
     for body_idx in range(0, 18):
         cur_body_mesh_fn = f"body{body_idx}_centered_scaled_v2.obj"
         cur_body_mesh_fn = os.path.join(meshes_folder, cur_body_mesh_fn)
@@ -2327,8 +2324,8 @@ def get_shadow_GT_states_data_from_ckpt(ckpt_fn):
 
 
 def calibrate_left_shadow_hand():
-    rgt_shadow_hand_des_folder = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description"
-    lft_shadow_hand_des_folder = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description_left"
+    rgt_shadow_hand_des_folder = "rsc/shadow_hand_description"
+    lft_shadow_hand_des_folder = "rsc/shadow_hand_description_left"
     os.makedirs(lft_shadow_hand_des_folder, exist_ok=True)
     lft_shadow_hand_mesh_folder = os.path.join(lft_shadow_hand_des_folder, "meshes")
     os.makedirs(lft_shadow_hand_mesh_folder, exist_ok=True)
@@ -2479,8 +2476,8 @@ if __name__=='__main__': # # #
     gt_ref_data_fn = "/home/xueyi/diffsim/Control-VAE/Data/ReferenceData/shadow_grab_train_split_85_bunny_wact_data.npy"
     # mano_glb_rot, glb_trans, states = test_gt_ref_data(gt_ref_data_fn)
     # eixt(0)
-    mano_states_fn = '/home/xueyi/diffsim/NeuS/raw_data/evalulated_traj_sm_l512_wana_v3_subiters1024_optim_params_shadow_85_bunny_std0d01_netv1_mass10000_new_dp1d0_wtable_gn9d8__step_2.npy'
-    mano_states_fn = '/home/xueyi/diffsim/NeuS/raw_data/evalulated_traj_sm_l512_wana_v3_subiters1024_optim_params_shadow_102_mouse_wact_std0d01_netv1_mass10000_new_dp1d0_dtv2tsv2ctlv2_netv3optt_lstd_langdamp_wcmase_ni4_wtable_gn_adp1d0_trwmonly_cs0d6_predtarmano_wambient__step_9.npy'
+    mano_states_fn = 'raw_data/evalulated_traj_sm_l512_wana_v3_subiters1024_optim_params_shadow_85_bunny_std0d01_netv1_mass10000_new_dp1d0_wtable_gn9d8__step_2.npy'
+    mano_states_fn = 'raw_data/evalulated_traj_sm_l512_wana_v3_subiters1024_optim_params_shadow_102_mouse_wact_std0d01_netv1_mass10000_new_dp1d0_dtv2tsv2ctlv2_netv3optt_lstd_langdamp_wcmase_ni4_wtable_gn_adp1d0_trwmonly_cs0d6_predtarmano_wambient__step_9.npy'
     mano_states = get_states(mano_states_fn)
     
     blended_ratio = 0.5
@@ -2512,19 +2509,19 @@ if __name__=='__main__': # # #
     tot_trans = np.stack(tot_trans, axis=0)
     blended_states = np.stack(blended_states, axis=0)
     
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/redmax_hand/redmax_hand_test_3_wcollision.urdf"
-    # dst_urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/redmax_hand/redmax_hand_test_3_wcollision_rescaled_grab.urdf"
+    # urdf_fn = "rsc/redmax_hand/redmax_hand_test_3_wcollision.urdf"
+    # dst_urdf_fn = "rsc/redmax_hand/redmax_hand_test_3_wcollision_rescaled_grab.urdf"
     # calibreate_urdf_files_v4(urdf_fn, dst_urdf_fn)
     # exit(0)
     
-    # meshes_folder = "/home/xueyi/diffsim/NeuS/rsc/redmax_hand/meshes/hand"
+    # meshes_folder = "rsc/redmax_hand/meshes/hand"
     # scale_and_save_meshes_v2(meshes_folder)
     # exit(0)
     
-    urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
-    urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/shadowhand_new_scaled_nroot_new.urdf"
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/shadowhand_new_scaled_nroot.urdf"
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/redmax_hand/redmax_hand_test_3_wcollision_rescaled_grab.urdf"
+    urdf_fn = "rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
+    urdf_fn = "rsc/shadow_hand_description/shadowhand_new_scaled_nroot_new.urdf"
+    # urdf_fn = "rsc/shadow_hand_description/shadowhand_new_scaled_nroot.urdf"
+    # urdf_fn = "rsc/redmax_hand/redmax_hand_test_3_wcollision_rescaled_grab.urdf"
     robot_agent = RobotAgent(urdf_fn)
     
     init_vertices, init_faces = robot_agent.active_robot.init_vertices, robot_agent.active_robot.init_faces
@@ -2543,7 +2540,7 @@ if __name__=='__main__': # # #
         ).T + tot_trans[i_ts][None]
         tot_transformed_pts.append(cur_pts_transformed)
     tot_transformed_pts = np.stack(tot_transformed_pts, axis=0)
-    np.save("/home/xueyi/diffsim/NeuS/raw_data/transformed_pts.npy", {'tot_transformed_pts': tot_transformed_pts, 'init_faces': init_faces})
+    np.save("raw_data/transformed_pts.npy", {'tot_transformed_pts': tot_transformed_pts, 'init_faces': init_faces})
     exit(0)
         
     
@@ -2554,10 +2551,10 @@ if __name__=='__main__': # # #
     init_faces = init_faces.detach().cpu().numpy()
     print(f"init_vertices: {init_vertices.shape}, init_faces: {init_faces.shape}")
     shadow_hand_mesh = trimesh.Trimesh(vertices=init_vertices, faces=init_faces)
-    # shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/shadow_hand_lft.obj"
-    shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/shadow_hand_new.ply"
+    # shadow_hand_sv_fn = "raw_data/shadow_hand_lft.obj"
+    shadow_hand_sv_fn = "raw_data/shadow_hand_new.ply"
     shadow_hand_mesh.export(shadow_hand_sv_fn)
-    np.save("/home/xueyi/diffsim/NeuS/raw_data/faces.npy", init_faces)
+    np.save("raw_data/faces.npy", init_faces)
     
     exit(0)
     
@@ -2566,9 +2563,9 @@ if __name__=='__main__': # # #
     init_faces = init_faces.detach().cpu().numpy()
     print(f"init_vertices: {init_vertices.shape}, init_faces: {init_faces.shape}")
     shadow_hand_mesh = trimesh.Trimesh(vertices=init_vertices, faces=init_faces)
-    # shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/shadow_hand_lft.obj"
-    shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/scaled_shadow_hand.obj"
-    shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/scaled_redmax_hand_rescaled_grab.obj"
+    # shadow_hand_sv_fn = "raw_data/shadow_hand_lft.obj"
+    shadow_hand_sv_fn = "raw_data/scaled_shadow_hand.obj"
+    shadow_hand_sv_fn = "raw_data/scaled_redmax_hand_rescaled_grab.obj"
     shadow_hand_mesh.export(shadow_hand_sv_fn)
     
     init_joint_states = torch.randn((60, ), dtype=torch.float32).cuda()
@@ -2577,22 +2574,22 @@ if __name__=='__main__': # # #
     
     cur_verts, cur_faces = robot_agent.get_init_visual_pts()
     cur_mesh = trimesh.Trimesh(vertices=cur_verts.detach().cpu().numpy(), faces=cur_faces.detach().cpu().numpy())
-    shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/scaled_redmax_hand_rescaled_grab_wstate.obj"
+    shadow_hand_sv_fn = "raw_data/scaled_redmax_hand_rescaled_grab_wstate.obj"
     cur_mesh.export(shadow_hand_sv_fn)
     exit(0)
     
     
     
-    urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
+    urdf_fn = "rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
     
     ## 
-    lft_urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description_left/shadowhand_left_new_scaled.urdf"
+    lft_urdf_fn = "rsc/shadow_hand_description_left/shadowhand_left_new_scaled.urdf"
     
     
-    urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/redmax_hand/redmax_hand_test_3_wcollision.urdf"
+    urdf_fn = "rsc/redmax_hand/redmax_hand_test_3_wcollision.urdf"
     
     ## 
-    lft_urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/redmax_hand/redmax_hand_test_3_wcollision.urdf"
+    lft_urdf_fn = "rsc/redmax_hand/redmax_hand_test_3_wcollision.urdf"
     
     robot_agent = RobotAgent(lft_urdf_fn)
     init_vertices, init_faces = robot_agent.active_robot.init_vertices, robot_agent.active_robot.init_faces
@@ -2600,13 +2597,13 @@ if __name__=='__main__': # # #
     init_faces = init_faces.detach().cpu().numpy()
     print(f"init_vertices: {init_vertices.shape}, init_faces: {init_faces.shape}")
     shadow_hand_mesh = trimesh.Trimesh(vertices=init_vertices, faces=init_faces)
-    shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/shadow_hand_lft.obj"
-    shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/redmax_hand.obj"
+    shadow_hand_sv_fn = "raw_data/shadow_hand_lft.obj"
+    shadow_hand_sv_fn = "raw_data/redmax_hand.obj"
     shadow_hand_mesh.export(shadow_hand_sv_fn)
     exit(0)
     
     
-    rgt_urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
+    rgt_urdf_fn = "rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
     # rgt_urdf_fn
     calibreate_urdf_files_left_hand(rgt_urdf_fn)
     exit(0)
@@ -2619,11 +2616,11 @@ if __name__=='__main__': # # #
     # get_shadow_GT_states_data_from_ckpt(ckpt_fn)
     # exit(0)
     
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
+    # urdf_fn = "rsc/shadow_hand_description/shadowhand_new_scaled.urdf"
     # calibreate_urdf_files_v2(urdf_fn)
     # exit(0)
     
-    meshes_folder = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/meshes"
+    meshes_folder = "rsc/shadow_hand_description/meshes"
     # scale_and_save_meshes(meshes_folder)
     # exit(0)
     
@@ -2633,17 +2630,17 @@ if __name__=='__main__': # # #
     # exit(0)
     
     
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/mano_mean_wcollision_scaled_scaled_0_9507_nroot.urdf"
+    # urdf_fn = "rsc/mano/mano_mean_wcollision_scaled_scaled_0_9507_nroot.urdf"
     # robot_agent = RobotAgent(urdf_fn)
     # exit(0)
     
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/mano_mean_nocoll_simplified.urdf"
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/mano_mean_wcollision_scaled.urdf"
+    # urdf_fn = "rsc/mano/mano_mean_nocoll_simplified.urdf"
+    # urdf_fn = "rsc/mano/mano_mean_wcollision_scaled.urdf"
     # calibreate_urdf_files(urdf_fn)
     # exit(0)
     
-    # urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/mano_mean_nocoll_simplified.urdf"
-    urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/shadow_hand_description/shadowhand_new.urdf"
+    # urdf_fn = "rsc/mano/mano_mean_nocoll_simplified.urdf"
+    urdf_fn = "rsc/shadow_hand_description/shadowhand_new.urdf"
     robot_agent = RobotAgent(urdf_fn)
     
     init_vertices, init_faces = robot_agent.active_robot.init_vertices, robot_agent.active_robot.init_faces
@@ -2651,7 +2648,7 @@ if __name__=='__main__': # # #
     init_faces = init_faces.detach().cpu().numpy()
     
     shadow_hand_mesh = trimesh.Trimesh(vertices=init_vertices, faces=init_faces)
-    shadow_hand_sv_fn = "/home/xueyi/diffsim/NeuS/raw_data/shadow_hand.obj"
+    shadow_hand_sv_fn = "raw_data/shadow_hand.obj"
     shadow_hand_mesh.export(shadow_hand_sv_fn)
     exit(0)
     
@@ -2663,7 +2660,7 @@ if __name__=='__main__': # # #
     np.save(f"ts_to_ref_points.npy", ts_to_ref_points)
     exit(0)
     
-    urdf_fn = "/home/xueyi/diffsim/NeuS/rsc/mano/mano_mean_nocoll_simplified.urdf"
+    urdf_fn = "rsc/mano/mano_mean_nocoll_simplified.urdf"
     cur_robot = parse_data_from_urdf(urdf_fn)
     # self.init_vertices, self.init_faces
     init_vertices, init_faces = cur_robot.init_vertices, cur_robot.init_faces

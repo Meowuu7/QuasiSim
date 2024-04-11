@@ -56,8 +56,6 @@ class Runner:
             
         
         self.base_exp_dir = self.conf['general.base_exp_dir']
-        # if not os.path.exists(self.base_exp_dir):
-        #     self.base_exp_dir = "/data/xueyi/NeuS/exp/hand_test_routine_2_light_color_wtime_active_passive/wmask"
         
         print(f"self.base_exp_dir:", self.base_exp_dir)
         self.base_exp_dir = self.base_exp_dir + f"_reverse_value_totviews_tag_{self.conf['general.tag']}"

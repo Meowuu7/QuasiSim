@@ -1,7 +1,7 @@
 
 export PYTHONPATH=.
 
-export cuda_ids="3"
+# export cuda_ids="3"
 
 
 
