@@ -128,6 +128,7 @@ ckpts
 
 Download [rsc.zip](https://1drv.ms/u/s!AgSPtac7QUbHgUKUL6O4E7_0ygNT?e=PZlb0I) and [raw_data.zip](https://1drv.ms/u/s!AgSPtac7QUbHgUEIHkPdmjmHUMQc?e=Q9IYY1). Extract them in the root folder of the project. 
 
+*Important:* Download [mano_pts.zip](https://1drv.ms/u/s!AgSPtac7QUbHgV_qhMSUm-Vmepk9?e=3ObaVb). Extract them in the folder `rsc/mano`. 
 
 
 
