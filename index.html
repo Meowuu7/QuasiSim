@@ -79,19 +79,42 @@
           <h2 class="title is-1 publication-title">
             Parameterized <span style="color: orange">Quasi</span>-Physical <span style="color: rgb(181, 108, 249)">Sim</span>ulators for <br>Dexterous Manipulations Transfer
           </h2>
-          <div class="is-size-5 publication-authors">
+
+          <!-- <div class="is-size-5 publication-authors">
             <span class="author-block">
               Anonymous Author(s)
             </span>
           </div>
           <div class="is-size-5 publication-authors">
             <span style="font-weight:bold">Paper under double-blind review</span>
+          </div> -->
+
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://meowuu7.github.io/">Xueyi Liu</a><sup>1,3</sup>,</span>
+            <span class="author-block">
+              <a href="">Kangbo Lyu</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="">Jieqiong Zhang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://people.iiis.tsinghua.edu.cn/~taodu/">Tao Du</a><sup>1,2,3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://ericyi.github.io">Li Yi</a><sup>1,2,3</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Tsinghua University,</span>
+            <span class="author-block"><sup>2</sup>Shanghai AI Laboratory,</span> 
+            <span class="author-block"><sup>3</sup>Shanghai Qi Zhi Institute</span> 
           </div>
 
           <div class="column has-text-centered">
             <div class="publication-links">
               <span class="link-block">
-                <a href="./static/pdfs/Dex_Manip_Tracking.pdf"
+                <a href="./static/pdfs/Parameterized_Quasi_Physical_Simulators_for_Dexterous_Manipulations_Transfer.pdf"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -100,7 +123,26 @@
                 </a>
               </span>
               <span class="link-block">
-                <a href="static/videos/video-7.mp4"
+                <a href="https://huggingface.co/spaces/xymeow7/quasi-physical-sims"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <!-- <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span> -->
+                  <span>🤗 Gradio Demo </span>
+                </a>
+              </span>
+              
+              <span class="link-block">
+                <a href="https://github.com/Meowuu7/QuasiSim"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href="https://youtu.be/Pho3KisCsu4"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-youtube"></i>
@@ -108,13 +150,41 @@
                   <span>Video</span>
                 </a>
               </span>
-              <span class="link-block">
-                <a href="static/others/Supp-Website.zip"
+              <!-- <span class="link-block">
+                <a href="./static/videos/video-7.mp4"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
-                      <i class="fa fa-database" aria-hidden="true"></i>
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video (local)</span>
+                </a>
+              </span> -->
+              <span class="link-block">
+                <a href="https://docs.google.com/presentation/d/1nRCxP_5P9Pcni53zvyRZ_PEDIaQeE8FF/edit?usp=sharing&ouid=103893738370724206774&rtpof=true&sd=true"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-slideshare"></i>
+                  </span>
+                  <span>Slides (114MB)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="static/others/Parameterized_Quasi_Physical_Simulators_for_Dexterous_Manipulations_Transfer_Supp.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
                   </span>
                   <span>Supp</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="./static/others/highres-figs.zip"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <!-- <i class="fas fa-file-pdf"></i> -->
+                      <i class="fa fa-database" aria-hidden="true"></i>
+                  </span>
+                  <span>HighRes Figs</span>
                 </a>
               </span>
             </div>
@@ -134,11 +204,17 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
+
+      <!-- <h2 class="subtitle has-text-centered">
+        <strong>TL;DR</strong>: QuasiSim presents a parameterized family of quasi-physical simulators. 
+      </h2> -->
+
       <video id="teaser" class="lazy" poster="static/images/teaser-2.png"  autoplay muted loop height="100%">
         <source data-src="static/videos-lowres/demo-video-4-compressed.mp4"
                 type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
+        <!-- <strong>TL;DR</strong>: QuasiSim presents a parameterized family of quasi-physical simulators.  -->
         By optimizing through <span style="color: rgb(146, 53, 238); font-weight:bold">a quasi-physical simulator curriculum</span>, we enable accurately controlling a simulated dexterous robot hand to track complex human manipulations with <span style="color: rgb(253, 125, 212); font-weight:bold">changing contact</span>, <span style="color: rgb(0, 255, 191); font-weight:bold">non-trivial object motions</span>, and <span style="color: orange; font-weight:bold">intricate tool-using</span>. 
         <!-- accurate tracking of  -->
         <!-- can transfer complex human manipulations to dexterous robot hand simulations  
@@ -252,10 +328,13 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3"><span style="color: rgb(0, 0, 0); font-weight:bold">Video</span></h2>
         <div class="publication-video">
-          <video class="lazy" controls muted height="100%">
+          <iframe src="https://www.youtube.com/embed/Pho3KisCsu4"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+          <!-- <video class="lazy" controls muted height="100%">
                     <source data-src="static/videos/video-7.mp4"
                     type="video/mp4"> </source>
-          </video>
+          </video> -->
         </div>
         
 
@@ -1190,10 +1269,10 @@
 
 
 </section>
-
+<!-- 
 <br>
 <br>
-<br>
+<br> -->
 
 <script src="https://polyfill.io/v3/polyfill.js?features=IntersectionObserver"></script>
 <!-- <script src="/assets/js/yall.js"></script> -->
@@ -1299,23 +1378,55 @@
 </script>
 
 
+<div class="container is-full-hd is-centered">
+  <!-- <hr class="solid; " color="blue" noshade> -->
+  <!-- <hr width="100%" size="2" color="blue" noshade> -->
+  <div class="line"></div>
+</div>
+
+
+
+<section class="section" id="Contact">
+  <div class="container is-max-desktop content has-text-centered">
+    <!-- <h2 class="title">Contact</h2> -->
+    <h2 class="title is-3">Contact</h2>
+      <p>
+        Please contact us at <a href="mailto:xymeow7@gmail.com">xymeow7@gmail.com</a> if you have any question. 
+      </p>
+  </div>
+</section>
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{liu2024geneoh,
+      title={GeneOH Diffusion: Towards Generalizable Hand-Object Interaction Denoising via Denoising Diffusion},
+      author={Liu, Xueyi and Yi, Li},
+      booktitle={The Twelfth International Conference on Learning Representations},
+      year={2024}
+    }</code></pre>
+  </div>
+</section> -->
+
+
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
-      <!-- <a class="icon-link"
-         href="./static/pdfs/paper.pdf">
+      <a class="icon-link"
+         href="./static/pdfs/Parameterized_Quasi_Physical_Simulators_for_Dexterous_Manipulations_Transfer.pdf">
         <i class="fas fa-file-pdf"></i>
       </a>
       <a class="icon-link"
-         href="./static/videos/video-2.mp4">
+         href="https://youtu.be/Pho3KisCsu4">
         <i class="fab fa-youtube"></i>
-      </a> -->
+      </a>
     </div>
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content">
           <p>
-            The template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. We thank authors for their codebase.
+            The template is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. We thank authors for their codebase.
           </p>
         </div>
       </div>
