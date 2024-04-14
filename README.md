@@ -45,7 +45,7 @@ This code was tested on `Ubuntu 20.04.5 LTS` and requires:
 
 <!-- (important Diffhand setup)  -->
 
-1. Creat a virtual environment and install necessary dependencies
+1. Create a virtual environment and install necessary dependencies
 
 Create a virtual environment
 
