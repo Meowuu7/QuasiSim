@@ -85,7 +85,8 @@ cd ..
 cd examples
 python test_redmax.py
 ```
-It's better to install it from this project since we have made modifications to support our purpose.
+<!-- It's better to install it from this project since we have made modifications to support our purpose. -->
+Opting to install it from this project is preferable, as we've made modifications to align with our specific objectives.
 
 
 ### Get data 

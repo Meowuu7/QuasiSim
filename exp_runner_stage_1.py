@@ -6713,7 +6713,8 @@ class Runner:
 
         self.minn_tracking_loss = 1e27
         
-        for i_iter in tqdm(range(100000)):
+        # for i_iter in tqdm(range(100000)):
+        for i_iter in tqdm(range(1000)):
             tot_losses = []
             tot_tracking_loss = []
             
