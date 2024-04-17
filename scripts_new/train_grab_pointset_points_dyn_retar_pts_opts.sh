@@ -19,7 +19,8 @@ export trainer=exp_runner_stage_1.py
 
 ### stage 2 -> tracking MANO expanded set using Shadow's expanded points ###
 export mode="train_point_set_retar_pts"
-export conf=dyn_grab_pointset_points_dyn_retar_pts.conf
+# export conf=dyn_grab_pointset_points_dyn_retar_pts.conf
+export conf=dyn_grab_pointset_points_dyn_retar_pts_opts.conf
 
 
 

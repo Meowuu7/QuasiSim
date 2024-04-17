@@ -4179,7 +4179,7 @@ class Runner:
         self.timestep_to_anchored_mano_pts = {}
 
 
-        for i_iter in tqdm(range(100000)):
+        for i_iter in tqdm(range(200)):
             tot_losses = []
             tot_tracking_loss = []
             
@@ -5348,7 +5348,8 @@ class Runner:
         self.sampled_robo_expanded_pts_idxes = None
 
 
-        for i_iter in tqdm(range(100000)):
+        # for i_iter in tqdm(range(100000)):
+        for i_iter in tqdm(range(200)):
             tot_losses = []
             tot_tracking_loss = []
             
