@@ -231,17 +231,17 @@ bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 Please contact xymeow7@gmail.com or raise a github issue if you have any questions.
 
 
-<!-- ## Bibtex
+## Bibtex
 If you find this code useful in your research, please cite:
 
 ```bibtex
-@inproceedings{liu2024geneoh,
-   title={GeneOH Diffusion: Towards Generalizable Hand-Object Interaction Denoising via Denoising Diffusion},
-   author={Liu, Xueyi and Yi, Li},
-   booktitle={The Twelfth International Conference on Learning Representations},
-   year={2024}
+@article{liu2024quasisim,
+  title={QuasiSim: Parameterized Quasi-Physical Simulators for Dexterous Manipulations Transfer},
+  author={Liu, Xueyi and Lyu, Kangbo and Zhang, Jieqiong and Du, Tao and Yi, Li},
+  journal={arXiv preprint arXiv:2404.07988},
+  year={2024}
 }
-``` -->
+```
 
 
 ## Acknowledgments
