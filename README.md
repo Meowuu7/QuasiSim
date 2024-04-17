@@ -198,6 +198,26 @@ Please execute the following commands for this step:
 ```shell
 bash scripts_new/train_grab_pointset_points_dyn_retar.sh
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
+bash scripts_new/train_grab_pointset_points_dyn_retar_pts_opts.sh
+```
+
+<!-- Please note that the point set constructed from the simulated Shadow hand contains 100k+ points, running the last two commands requires GPU memory of at least 56GB. Therefore, in our experiments, this part is conducted on 80GB A800 gpus. 
+
+
+Optimizing the trajectory of the articulated Shadow hand directly is an alternative strategy. Adopting this option requires smaller GPU memory size. A single 3090/4090 with 24GB is enough. Please execute the following commands for this suit of optimization: -->
+
+Please note that the point set constructed from the simulated Shadow hand contains over 100,000 points. Running the last two commands necessitates a GPU memory of at least 56GB. Consequently, in our experiments, this part is conducted using 80GB A800 GPUs.
+
+An alternative approach is optimizing the trajectory of the articulated Shadow hand directly. 
+<!-- Optimizing the trajectory of the articulated Shadow hand directly presents an alternative approach. -->
+This option requires a smaller GPU memory size. A single 3090/4090 with 24GB is sufficient. 
+<!-- For the example included in the repo currently with bulky object shape and relatively clean human motion references, this strategy can achieve compatiable optimization results as the original one. However it may lead to a degeneration in some cases.  -->
+For the example currently included in the repository with bulky object shapes and relatively clean human motion references, this strategy can yield compatible optimization results compared to the original approach. However, it may lead to degradation in some cases.
+Please execute the following commands for this optimization suite:
+
+```shell
+bash scripts_new/train_grab_pointset_points_dyn_retar.sh
+bash scripts_new/train_grab_pointset_points_dyn_retar_opts.sh
 ```
 
 

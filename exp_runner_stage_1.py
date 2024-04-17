@@ -3066,7 +3066,7 @@ class Runner:
         self.ts_to_dyn_mano_pts_th = {}
 
 
-        for i_iter in tqdm(range(100000)):
+        for i_iter in tqdm(range(1000)):
             tot_losses = []
             tot_tracking_loss = []
             
@@ -4162,6 +4162,14 @@ class Runner:
         
         self.kines_optimizer = torch.optim.Adam(params_to_train_kines, lr=self.learning_rate) #### kinematics optimizer ###
         
+        
+        if self.optimize_rules:
+            params_to_train_kines = []
+            params_to_train_kines += list(self.other_bending_network.parameters())
+            self.kines_optimizer = torch.optim.Adam(params_to_train_kines, lr=self.learning_rate) 
+            
+        
+        
         self.expanded_set_delta_motion_ori = self.mano_expanded_actuator_delta_offset.weight.data.clone()
         
       
@@ -4588,80 +4596,9 @@ class Runner:
                         ''' the bending network still have this property and we can get force values here for the expanded visual points '''
                         self.timestep_to_actuator_points_passive_forces[cur_ts] = self.other_bending_network.penetrating_forces_allpts.detach().clone()  
                         
-                    
-
-                # if self.optimize_robot:
-                #     contact_pairs_set = self.other_bending_network.forward2( input_pts_ts=cur_ts, timestep_to_active_mesh=self.timestep_to_active_mesh, timestep_to_passive_mesh=self.timestep_to_passive_mesh, timestep_to_passive_mesh_normals=self.timestep_to_passive_mesh_normals, friction_forces=self.robot_actuator_friction_forces, sampled_verts_idxes=None, reference_mano_pts=None, fix_obj=False, contact_pairs_set=contact_pairs_set, pts_frictional_forces=None)
-                # else:
-                #     anchored_cur_visual_pts_friction_forces = cur_visual_pts_friction_forces[anchored_mano_visual_pts]
-                #     contact_pairs_set = self.other_bending_network.forward2( input_pts_ts=cur_ts, timestep_to_active_mesh=self.timestep_to_anchored_mano_pts, timestep_to_passive_mesh=self.timestep_to_passive_mesh, timestep_to_passive_mesh_normals=self.timestep_to_passive_mesh_normals, friction_forces=self.robot_actuator_friction_forces, sampled_verts_idxes=None, reference_mano_pts=None, fix_obj=False, contact_pairs_set=contact_pairs_set, pts_frictional_forces=anchored_cur_visual_pts_friction_forces)
-
-
-                # if self.train_with_forces_to_active and (not self.use_mano_inputs):
-                #     # penetration_forces #
-                #     if torch.sum(self.other_bending_network.penetrating_indicator.float()) > 0.5:
-                #         net_penetrating_forces = self.other_bending_network.penetrating_forces
-                #         net_penetrating_points = self.other_bending_network.penetrating_points
-
-                        
-                #         # timestep_to_raw_active_meshes, timestep_to_penetration_points, timestep_to_penetration_points_forces
-                #         self.timestep_to_penetration_points[cur_ts] = net_penetrating_points.detach().cpu().numpy()
-                #         self.timestep_to_penetration_points_forces[cur_ts] = net_penetrating_forces.detach().cpu().numpy()
-                        
-                        
-                #         ### transform the visual pts ###
-                #         # cur_visual_pts = (cur_visual_pts - self.minn_robo_pts) / self.extent_robo_pts
-                #         # cur_visual_pts = cur_visual_pts * 2. - 1.
-                #         # cur_visual_pts = cur_visual_pts * self.mult_const_after_cent # mult_const #
-                        
-                #         # sampled_visual_pts_joint_idxes = visual_pts_joint_idxes[finger_sampled_idxes][self.other_bending_network.penetrating_indicator]
-                        
-                #         # sampled_visual_pts_joint_idxes = visual_pts_joint_idxes[self.other_bending_network.penetrating_indicator]
-                        
-                #         net_penetrating_forces = torch.matmul(
-                #             cur_rot.transpose(1, 0), net_penetrating_forces.transpose(1, 0)
-                #         ).transpose(1, 0)
-                #         net_penetrating_forces = net_penetrating_forces / self.mult_const_after_cent
-                #         net_penetrating_forces = net_penetrating_forces / 2
-                #         net_penetrating_forces = net_penetrating_forces * self.extent_robo_pts
-                        
-                #         net_penetrating_points = torch.matmul(
-                #             cur_rot.transpose(1, 0), (net_penetrating_points - cur_trans.unsqueeze(0)).transpose(1, 0)
-                #         ).transpose(1, 0)
-                #         net_penetrating_points = net_penetrating_points / self.mult_const_after_cent
-                #         net_penetrating_points = (net_penetrating_points + 1.) / 2. # penetrating points #
-                #         net_penetrating_points = (net_penetrating_points * self.extent_robo_pts) + self.minn_robo_pts
-                        
-                        
-                #         link_maximal_contact_forces = torch.zeros((redmax_ndof_r, 6), dtype=torch.float32).cuda()
-                        
-                #     else:
-                #         # penetration_forces = None
-                #         link_maximal_contact_forces = torch.zeros((redmax_ndof_r, 6), dtype=torch.float32).cuda()
-                        
-                # if contact_pairs_set is not None:
-                #     self.contact_pairs_sets[cur_ts] = contact_pairs_set.copy()
                 
-                # # contact force d ## ts to the passive normals ## 
-                # self.ts_to_contact_passive_normals[cur_ts] = self.other_bending_network.tot_contact_passive_normals.detach().cpu().numpy()
-                # self.ts_to_passive_pts[cur_ts] = self.other_bending_network.cur_passive_obj_verts.detach().cpu().numpy()
-                # self.ts_to_passive_normals[cur_ts] = self.other_bending_network.cur_passive_obj_ns.detach().cpu().numpy()
-                # self.ts_to_contact_force_d[cur_ts] = self.other_bending_network.contact_force_d.detach().cpu().numpy()
-                # self.ts_to_penalty_frictions[cur_ts] = self.other_bending_network.penalty_friction_tangential_forces.detach().cpu().numpy()
-                # if self.other_bending_network.penalty_based_friction_forces is not None:
-                #     self.ts_to_penalty_disp_pts[cur_ts] = self.other_bending_network.penalty_based_friction_forces.detach().cpu().numpy()
                 
-                # # # get the penetration depth of the bending network #
-                # tot_penetration_depth.append(self.other_bending_network.penetrating_depth_penalty.detach().item())
                 
-                # ### optimize with intermediates ### # optimize with intermediates # 
-                # if self.optimize_with_intermediates:
-                #     tracking_loss = self.compute_loss_optimized_transformations(cur_ts + 1) # 
-                # else:
-                #     tracking_loss = torch.zeros((1,), dtype=torch.float32).cuda().mean()
-                    
-                
-                # # cur_ts % mano_nn_substeps == 0: # 
                 if (cur_ts + 1) % mano_nn_substeps == 0:
                     cur_passive_big_ts = cur_ts // mano_nn_substeps
                     ### tracking loss between the predicted transformation and te tracking ###
@@ -4670,34 +4607,12 @@ class Runner:
                 else:
                     tracking_loss = torch.zeros((1,), dtype=torch.float32).cuda().mean()
 
-                # # hand_tracking_loss = torch.sum( ## delta states? ##
-                # #     (self.timestep_to_active_mesh_w_delta_states[cur_ts] - cur_visual_pts) ** 2, dim=-1
-                # # )
-                # # hand_tracking_loss = hand_tracking_loss.mean()
+
+
+
+
+                # cur_interpenetration_nns = self.other_bending_network.smaller_than_zero_level_set_indicator.float().sum()
                 
-                
-                # # loss = tracking_loss + self.other_bending_network.penetrating_depth_penalty * self.penetrating_depth_penalty_coef
-                # # diff_redmax_visual_pts_with_ori_visual_pts.backward()
-                # penetraton_penalty = self.other_bending_network.penetrating_depth_penalty * self.penetrating_depth_penalty_coef
-                
-                
-                # diff_hand_tracking = torch.zeros((1,), dtype=torch.float32).cuda().mean() ## 
-                
-                # ## diff
-                # # diff_hand_tracking_coef
-                # # kinematics_proj_loss = kinematics_trans_diff + penetraton_penalty + diff_hand_tracking * self.diff_hand_tracking_coef + tracking_loss
-                
-                # # if self.use_mano_hand_for_test: ## only the kinematics mano hand is optimized here ##
-                # #     kinematics_proj_loss = tracking_loss
-                
-                # # kinematics_proj_loss = hand_tracking_loss * 1e2
-                
-                # smaller_than_zero_level_set_indicator
-                cur_interpenetration_nns = self.other_bending_network.smaller_than_zero_level_set_indicator.float().sum()
-                
-                
-                # kinematics_proj_loss = diff_hand_tracking * self.diff_hand_tracking_coef + tracking_loss + penetraton_penalty
-                # expanded_set_delta_motion_ori
                 diff_actions = torch.sum(
                     (self.expanded_set_delta_motion_ori - self.mano_expanded_actuator_delta_offset.weight) ** 2, dim=-1
                 )
@@ -4715,9 +4630,9 @@ class Runner:
                 ### the tracking loss ###
                 # kinematics_proj_loss = loss_finger_tracking + tracking_loss + diff_actions # + tracking_loss + penetraton_penalty
                 
-                kinematics_proj_loss = loss_finger_tracking # + tracking_loss
+                kinematics_proj_loss = loss_finger_tracking + tracking_loss
                 
-                loss = kinematics_proj_loss # * self.loss_scale_coef ## get 
+                loss = kinematics_proj_loss
                 
                 
                 mano_tracking_loss.append(loss_finger_tracking.detach().cpu().item())
@@ -6173,6 +6088,9 @@ class Runner:
         
         nn_glb_retar_eps = 1000
         nn_wstates_retar_eps = 2000
+        nn_dense_retar_eps = 2000
+        
+        tot_retar_eps = nn_glb_retar_eps + nn_wstates_retar_eps + nn_dense_retar_eps
         
         transfer_to_wstates = False
         transfer_to_denseretar = False
@@ -6181,7 +6099,7 @@ class Runner:
         
         minn_dist_mano_pts_to_visual_pts_idxes = None
         
-        for i_iter in tqdm(range(100000)):
+        for i_iter in tqdm(range(tot_retar_eps)):
             tot_losses = []
 
             tot_tracking_loss = []
@@ -7084,7 +7002,7 @@ class Runner:
 
         self.minn_tracking_loss = 1e27
         
-        for i_iter in tqdm(range(100000)):
+        for i_iter in tqdm(range(1000)):
             tot_losses = []
             tot_tracking_loss = []
             
@@ -8855,12 +8773,12 @@ if __name__ == '__main__':
     #     else:
     #         runner.train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_arctic_twohands()
     
-    elif args.mode == "train_real_robot_actions_from_mano_model_rules_shadowhand":
-        runner.train_real_robot_actions_from_mano_model_rules_shadowhand()
+    # elif args.mode == "train_real_robot_actions_from_mano_model_rules_shadowhand":
+    #     runner.train_real_robot_actions_from_mano_model_rules_shadowhand()
     
     
-    elif args.mode == "train_redmax_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab":
-        runner.train_redmax_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab()
+    # elif args.mode == "train_redmax_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab":
+    #     runner.train_redmax_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab()
     
 
 
