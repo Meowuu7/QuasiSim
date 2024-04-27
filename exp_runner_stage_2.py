@@ -105,6 +105,12 @@ class Runner:
         self.conf = ConfigFactory.parse_string(conf_text)
         self.conf['dataset.data_dir'] = self.conf['dataset.data_dir'].replace('CASE_NAME', case)
         self.base_exp_dir = self.conf['general.base_exp_dir']
+        
+        local_exp_dir = "/data2/xueyi/quasisim/exp/"
+        if os.path.exists(local_exp_dir):
+            self.base_exp_dir = local_exp_dir
+        
+        
         self.base_exp_dir = self.base_exp_dir + f"_reverse_value_totviews_tag_{self.conf['general.tag']}"
         os.makedirs(self.base_exp_dir, exist_ok=True)
         # self.dataset = Dataset(self.conf['dataset']) # base exp dirs # # base exp dirs # ---- base exp dirs # # base exp dirs # 

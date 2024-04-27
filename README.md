@@ -160,15 +160,48 @@ The following instructions aim to optimize the control trajectory to enable the 
 
 This stage is divided into four steps as described below.
 
+**Experimental folder**: By defult, the experiment directory where the intermediate optimization results and checkpoints will save is `exp/`. It's better to change it to your folder for savin large files since the checkpoints will occupy a significant amount of storage. To use a different experimental folder, set the variable `local_exp_dir` in the `__init__` function of the `Runner` class in files `exp_runner_stage_1.py` and `exp_runner_stage_2.py` to your folder. 
+
 **Step 1: Optimizing the trajectory of the simulated dynamic MANO hand**
 
-In this step, we optimize a control trajectory for the dynamic MANO hand model to track the reference manipulation. Please execute the following commands sequentially:
+In this step, we optimize a control trajectory for the dynamic MANO hand model to track the reference manipulation. Please execute the following commands *sequentially*:
+
+*Substep 1*: Optimize for a MANO dynamic trajectory to track the parametric MANO trajectory
 
 ```shell
-bash scripts_new/train_grab_mano.sh
-bash scripts_new/train_grab_mano_wreact.sh
-bash scripts_new/train_grab_mano_wreact_optacts.sh
+bash scripts_new/train_grab_mano.sh # substep 1
 ```
+
+*Substep 2*: Identify system parameters
+
+- To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn.conf` to the last one saved in the previous substep (*e.g.,* `exp/_reverse_value_totviews_tag_train_dyn_mano_acts_/checkpoints/ckpt_054060.pth`)
+- Leave theses argumentes not changed to use our pre-optimized checkpoint. 
+
+Run
+```shell
+bash scripts_new/train_grab_mano_wreact.sh # substep 2
+```
+
+*Substep 3*: Optimize for a MANO dynamic trajectory to physically track the demonstration
+
+- To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn_optacts.conf` to the last one saved in the previous substep.
+- Leave theses argumentes not changed to use our pre-optimized checkpoint. 
+
+```shell
+bash scripts_new/train_grab_mano_wreact_optacts.sh # substep 3
+```
+
+
+Time consumption of each substep is listed as follows as we tested: 
+| Time | `train_grab_mano` | `train_grab_mano_wreact` | `train_grab_mano_wreact_optacts` |
+| ---- | ----------------- | ------------------------ | -------------------------------- |
+| 3090 | ~3 hrs              |   ~3 hrs                   |          ~3 hrs                        |
+
+
+
+
+
+
 
 **Step 2: Optimizing the control trajectory for the point set constructed from the MANO hand** 
 
