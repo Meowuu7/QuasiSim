@@ -161,7 +161,8 @@ The following instructions aim to optimize the control trajectory to enable the 
 
 This stage is divided into four steps as described below.
 
-**Experimental folder**: By defult, the experiment directory where the intermediate optimization results and checkpoints will save is `exp/`. It's better to change it to your folder for savin large files since the checkpoints will occupy a significant amount of storage. To use a different experimental folder, set the variable `local_exp_dir` in the `__init__` function of the `Runner` class in files `exp_runner_stage_1.py` and `exp_runner_stage_2.py` to your folder. 
+<!-- **Experimental folder**:  -->
+By defult, the experiment directory where the intermediate optimization results and checkpoints will save is `exp/`. It's better to change it to your folder for savin large files since the checkpoints will occupy a significant amount of storage. To use a different experimental folder, set the variable `local_exp_dir` in the `__init__` function of the `Runner` class in files `exp_runner_stage_1.py` and `exp_runner_stage_2.py` to your folder. 
 
 **Step 1: Optimizing the trajectory of the simulated dynamic MANO hand**
 
