@@ -189,6 +189,7 @@ bash scripts_new/train_grab_mano_wreact.sh # substep 2
 - To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn_optacts.conf` to the last one saved in the previous substep.
 - Leave theses argumentes not changed to use our pre-optimized checkpoint. 
 
+Run
 ```shell
 bash scripts_new/train_grab_mano_wreact_optacts.sh # substep 3
 ```
