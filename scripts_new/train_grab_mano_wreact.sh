@@ -18,7 +18,7 @@ export conf_root="./confs_new"
 
 
 
-export cuda_ids="1"
+export cuda_ids="0"
 
 
 # bash scripts_new/train_grab_mano_wreact.sh

@@ -57,7 +57,8 @@ class Runner:
         
         self.base_exp_dir = self.conf['general.base_exp_dir']
         
-        local_exp_dir = "/data2/xueyi/quasisim/exp/"
+        # local_exp_dir = "/data2/xueyi/quasisim/exp/"
+        local_exp_dir = "/data/xueyi/quasisim/exp"
         if os.path.exists(local_exp_dir):
             self.base_exp_dir = local_exp_dir
         

@@ -19,7 +19,7 @@ export conf_root="./confs_new"
 
 # bash scripts_new/train_grab_mano.sh
 
-export cuda_ids="1"
+export cuda_ids="0"
 # 
 
 PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python CUDA_VISIBLE_DEVICES=${cuda_ids} python ${trainer} --mode ${mode} --conf ${conf_root}/${conf} --case ${data_case}

@@ -162,7 +162,10 @@ The following instructions aim to optimize the control trajectory to enable the 
 This stage is divided into four steps as described below.
 
 <!-- **Experimental folder**:  -->
-By defult, the experiment directory where the intermediate optimization results and checkpoints will save is `exp/`. It's better to change it to your folder for savin large files since the checkpoints will occupy a significant amount of storage. To use a different experimental folder, set the variable `local_exp_dir` in the `__init__` function of the `Runner` class in files `exp_runner_stage_1.py` and `exp_runner_stage_2.py` to your folder. 
+<!-- By defult, the experiment directory where the intermediate optimization results and checkpoints will save is `exp/`. It's better to change it to your folder for savin large files since the checkpoints will occupy a significant amount of storage. To use a different experimental folder, set the variable `local_exp_dir` in the `__init__` function of the `Runner` class in files `exp_runner_stage_1.py` and `exp_runner_stage_2.py` to your folder.  -->
+
+
+By default, the experiment directory where the intermediate optimization results and checkpoints are saved is `exp/`. However, considering that the checkpoints will occupy a considerable amount of storage, it's advisable to change it to a folder designated for storing large files. To use a different experimental folder, set the variable `local_exp_dir` in the `__init__` function of the `Runner` class within the files `exp_runner_stage_1.py` and `exp_runner_stage_2.py` to your desired folder.
 
 **Step 1: Optimizing the trajectory of the simulated dynamic MANO hand**
 
@@ -176,8 +179,11 @@ bash scripts_new/train_grab_mano.sh # substep 1
 
 *Substep 2*: Identify system parameters
 
-- To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn.conf` to the last one saved in the previous substep (*e.g.,* `exp/_reverse_value_totviews_tag_train_dyn_mano_acts_/checkpoints/ckpt_054060.pth`)
-- Leave theses argumentes not changed to use our pre-optimized checkpoint. 
+<!-- - To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn.conf` to the last one saved in the previous substep (*e.g.,* `exp/_reverse_value_totviews_tag_train_dyn_mano_acts_/checkpoints/ckpt_054060.pth`)
+- Leave theses argumentes not changed to use our pre-optimized checkpoint.  -->
+
+
+To utilize the optimized checkpoint from the previous substep, adjust the arguments `ckpt_fn` and `load_optimized_init_actions` in the file `confs_new/dyn_grab_pointset_mano_dyn.conf` to point to the last one saved in the previous substep (e.g., `exp/_reverse_value_totviews_tag_train_dyn_mano_acts_/checkpoints/ckpt_054060.pth`). Alternatively, leave these arguments unchanged to utilize our pre-optimized checkpoint.
 
 Run
 ```shell
@@ -186,8 +192,11 @@ bash scripts_new/train_grab_mano_wreact.sh # substep 2
 
 *Substep 3*: Optimize for a MANO dynamic trajectory to physically track the demonstration
 
-- To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn_optacts.conf` to the last one saved in the previous substep.
-- Leave theses argumentes not changed to use our pre-optimized checkpoint. 
+<!-- - To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn_optacts.conf` to the last one saved in the previous substep.
+- Leave theses argumentes not changed to use our pre-optimized checkpoint.  -->
+
+
+To utilize the optimized checkpoint from the preceding substep, adjust the arguments `ckpt_fn` and `load_optimized_init_actions` in the file `confs_new/dyn_grab_pointset_mano_dyn_optacts.conf` to correspond to the latest one saved in the preceding substep. Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
 
 Run
 ```shell
@@ -195,10 +204,11 @@ bash scripts_new/train_grab_mano_wreact_optacts.sh # substep 3
 ```
 
 
-Time consumption of each substep is listed as follows as we tested: 
+The time consumption for each substep is listed below, as we tested:
 | Time | `train_grab_mano` | `train_grab_mano_wreact` | `train_grab_mano_wreact_optacts` |
 | ---- | ----------------- | ------------------------ | -------------------------------- |
-| 3090 | ~3 hrs              |   ~3 hrs                   |          ~3 hrs                        |
+| 3090-24G | ~3 hrs              |   ~3 hrs                   |          ~3 hrs                        |
+| A800-80G | ~2 hrs 20 mins              |   ~3 hrs                   |          ~2 hrs 40 mins                        |
 
 
 

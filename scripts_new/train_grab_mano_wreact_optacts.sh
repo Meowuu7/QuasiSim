@@ -20,7 +20,7 @@ export conf_root="./confs_new"
 
 
 
-export cuda_ids="2"
+export cuda_ids="0"
 
 
 # bash scripts_new/train_grab_mano_wreact_optacts.sh
