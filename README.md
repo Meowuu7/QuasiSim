@@ -218,14 +218,66 @@ The time consumption for each substep is listed below, as we tested:
 
 **Step 2: Optimizing the control trajectory for the point set constructed from the MANO hand** 
 
-Execute the following four commands sequentially for this step:
+Execute the following the following four substeps. Please note that they cannot be excuted in parallel.
+<!-- four commands sequentially for this step: -->
 
+
+*Substep 1*: Kinematic MANO's point set trajectory optimization
+
+To utilize the optimized checkpoint from the preceding substep, adjust the argument `load_optimized_init_actions` in the file `confs_new/dyn_grab_pointset_points_dyn_s1.conf` to correspond to the latest one saved in the preceding step. Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
+
+Run
 ```shell
+bash scripts_new/train_grab_pointset_points_dyn_s1.sh # substep 1 
+```
+
+*Substep 2*: Dynamic MANO's point set trajectory optimization
+
+To utilize the optimized checkpoint from the preceding substep, adjust the argument `load_optimized_init_actions` in the file `confs_new/dyn_grab_pointset_points_dyn_s2.conf` to correspond to the latest one saved in the preceding step. Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
+
+Run
+```shell
+bash scripts_new/train_grab_pointset_points_dyn_s2.sh # substep 2
+```
+
+
+*Substep 3*: Identify the undefined parameters
+
+
+To utilize the optimized checkpoint from the preceding substep, adjust the argument `load_optimized_init_actions` in the file `confs_new/dyn_grab_pointset_points_dyn_s3.conf` to correspond to the latest one saved in the preceding step. Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
+
+Run
+```shell
+bash scripts_new/train_grab_pointset_points_dyn_s3.sh # substep 3
+```
+
+
+*Substep 4*: Dynamic MANO's point set trajectory optimization
+
+
+To utilize the optimized checkpoint from the preceding substep, adjust the arguments  `ckpt_fn` and `load_optimized_init_actions` in the file `confs_new/dyn_grab_pointset_points_dyn_s4.conf` to correspond to the latest one saved in the preceding step. Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
+
+Run
+```shell
+bash scripts_new/train_grab_pointset_points_dyn_s4.sh # substep 4
+```
+
+
+
+The time consumption for each substep is listed below, as we tested:
+| Time | `s1` | `s2` | `s3` | `s4` |
+| ---- | ----------------- | ------------------------ | -------------------------------- | -------------------------------- |
+| A800-80G | ~2 hrs 20 mins              |   ~3 hrs                   |          ~2 hrs 40 mins                        |  ~2 hrs 40 mins                        |
+
+
+
+
+<!-- ```shell
 bash scripts_new/train_grab_pointset_points_dyn_s1.sh
 bash scripts_new/train_grab_pointset_points_dyn_s2.sh
 bash scripts_new/train_grab_pointset_points_dyn_s3.sh
 bash scripts_new/train_grab_pointset_points_dyn_s4.sh
-```
+``` -->
 
 **Step 3: Optimizing the trajectory of the kinematic Shadow hand**
 
