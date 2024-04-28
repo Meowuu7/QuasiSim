@@ -267,7 +267,7 @@ bash scripts_new/train_grab_pointset_points_dyn_s4.sh # substep 4
 The time consumption for each substep is listed below, as we tested:
 | Time | `s1` | `s2` | `s3` | `s4` |
 | ---- | ----------------- | ------------------------ | -------------------------------- | -------------------------------- |
-| A800-80G | ~2 hrs 20 mins              |   ~2 hrs                   |          ~2 hrs 40 mins                        |  ~2 hrs 40 mins                        |
+| A800-80G | ~2 hrs 20 mins              |   ~2 hrs                   |          ~3 hrs 15 mins                        |  ~2 hrs 40 mins                        |
 
 
 
