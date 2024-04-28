@@ -289,6 +289,8 @@ In this step, we optimize the trajectory of the kinematic Shadow hand based on k
 bash scripts_new/train_grab_sparse_retar.sh
 ```
 
+The time consumption for this step is about 7 hrs as we tested on a single A800 card. 
+
 **Step 4: Optimizing the control trajectory for the point set constructed from the simulated Shadow hand** 
 
 Please execute the following commands for this step:
