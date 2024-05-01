@@ -1800,7 +1800,7 @@ class Runner:
         mano_agent = dyn_model_act_mano.RobotAgent(xml_fn=model_path_mano) ## model path mano ## # 
         self.mano_agent = mano_agent
         # ''' Load the mano hand '''
-        self.mano_agent.active_robot.expand_visual_pts()
+        self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         # self.robo_hand_faces = self.mano_agent.robot_faces
         
         # if self.use_mano_hand_for_test: ##
@@ -1809,7 +1809,7 @@ class Runner:
         
         ## start expanding the current visual pts ##
         print(f"Start expanding the current visual pts...")
-        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         
         self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
 
@@ -2676,7 +2676,7 @@ class Runner:
         mano_agent = dyn_model_act_mano.RobotAgent(xml_fn=model_path_mano) ## model path mano ## # 
         self.mano_agent = mano_agent
         # ''' Load the mano hand '''
-        self.mano_agent.active_robot.expand_visual_pts()
+        self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         self.robo_hand_faces = self.mano_agent.robot_faces
         
         # if self.use_mano_hand_for_test: ##
@@ -2685,7 +2685,7 @@ class Runner:
         
         ## start expanding the current visual pts ##
         print(f"Start expanding the current visual pts...")
-        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         
         self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
 
@@ -3789,7 +3789,7 @@ class Runner:
         mano_agent = dyn_model_act_mano.RobotAgent(xml_fn=model_path_mano) ## model path mano ## # 
         self.mano_agent = mano_agent
         # ''' Load the mano hand '''
-        self.mano_agent.active_robot.expand_visual_pts()
+        self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         # self.robo_hand_faces = self.mano_agent.robot_faces
         
         # if self.use_mano_hand_for_test: ## use
@@ -3798,7 +3798,7 @@ class Runner:
         
         ## start expanding the current visual pts ##
         print(f"Start expanding current visual pts...")
-        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         
         self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
 
@@ -3819,7 +3819,7 @@ class Runner:
 
         
         ''' Expnad the current visual points ''' 
-        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         # self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
         # expanded_visual_pts_npy = expanded_visual_pts.detach().cpu().numpy()
         # expanded_visual_pts_sv_fn = "expanded_visual_pts.npy"
@@ -4780,7 +4780,7 @@ class Runner:
                 np.save(redmax_sampled_verts_idxes_fn, sampled_verts_idxes.detach().cpu().numpy())
             self.sampled_verts_idxes = sampled_verts_idxes
         
-        robo_expanded_visual_pts = self.robot_agent.active_robot.expand_visual_pts()
+        robo_expanded_visual_pts = self.robot_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         self.robo_expanded_visual_pts_nn = robo_expanded_visual_pts.size(0)
         
         self.robo_hand_faces = self.robot_agent.robot_faces
@@ -4807,7 +4807,7 @@ class Runner:
         mano_agent = dyn_model_act_mano.RobotAgent(xml_fn=model_path_mano) ## model path mano ## # 
         self.mano_agent = mano_agent
         # ''' Load the mano hand '''
-        self.mano_agent.active_robot.expand_visual_pts()
+        self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         # self.robo_hand_faces = self.mano_agent.robot_faces
         
         
@@ -4818,7 +4818,7 @@ class Runner:
         
         ## start expanding the current visual pts ##
         print(f"Start expanding current visual pts...")
-        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         
         self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
         ## expanded_visual_pts of the expanded visual pts #
@@ -4838,7 +4838,7 @@ class Runner:
 
         
         ''' Expnad the current visual points ''' 
-        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         # self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
         # expanded_visual_pts_npy = expanded_visual_pts.detach().cpu().numpy()
         # expanded_visual_pts_sv_fn = "expanded_visual_pts.npy"
@@ -6517,7 +6517,7 @@ class Runner:
         
         
         ''' Expnad the current visual points ''' 
-        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         # self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
         # expanded_visual_pts_npy = expanded_visual_pts.detach().cpu().numpy()
         # expanded_visual_pts_sv_fn = "expanded_visual_pts.npy"
@@ -6882,7 +6882,7 @@ class Runner:
         
         
         ''' Expnad the current visual points ''' 
-        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts()
+        # expanded_visual_pts = self.mano_agent.active_robot.expand_visual_pts(expand_factor=self.pointset_expand_factor, nn_expand_pts=self.pointset_nn_expand_pts)
         # self.expanded_visual_pts_nn = expanded_visual_pts.size(0)
         # expanded_visual_pts_npy = expanded_visual_pts.detach().cpu().numpy()
         # expanded_visual_pts_sv_fn = "expanded_visual_pts.npy"
