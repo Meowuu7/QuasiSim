@@ -212,7 +212,7 @@ class Visual:
             init_visual_meshes['faces'].append(self.faces)
         return init_visual_meshes
 
-    def expand_visual_pts(self, ):
+    def expand_visual_pts(self, expand_factor=0.1, nn_expand_pts=10):
         # expand_factor = 0.2
         # nn_expand_pts = 20
         
@@ -225,8 +225,14 @@ class Visual:
         # expand_factor = 0.2
         # nn_expand_pts = 20 ##
         
-        expand_factor = 0.1
-        nn_expand_pts = 10 ##
+        ## add a parameter to control the expanded factor and nn_expand_pts #
+        
+        # expand_factor = 0.1
+        # nn_expand_pts = 10 ##
+        
+        expand_factor = expand_factor
+        nn_expand_pts = nn_expand_pts
+        
         expand_save_fn = f"{self.mesh_nm}_expanded_pts_factor_{expand_factor}_nnexp_{nn_expand_pts}_new.npy"
         expand_save_fn = os.path.join(self.mesh_root, expand_save_fn) # 
         
@@ -283,10 +289,10 @@ class Link_urdf:
         self.children = ...
         self.children = {} # joint name to child sruct
         
-    def expand_visual_pts(self, expanded_visual_pts, link_name_to_visited, link_name_to_link_struct):
+    def expand_visual_pts(self, expanded_visual_pts, link_name_to_visited, link_name_to_link_struct, expand_factor=0.1, nn_expand_pts=10):
         link_name_to_visited[self.name] = 1
         if self.visual is not None:
-            cur_expanded_visual_pts = self.visual.expand_visual_pts()
+            cur_expanded_visual_pts = self.visual.expand_visual_pts(expand_factor=expand_factor, nn_expand_pts=nn_expand_pts)
             expanded_visual_pts.append(cur_expanded_visual_pts)
         
         for cur_link in self.children:
@@ -296,7 +302,7 @@ class Link_urdf:
                 continue
             ## expanded visual pts for the expand visual ptsS ## 
             ## link name to visited ## 
-            expanded_visual_pts = cur_link_struct.expand_visual_pts(expanded_visual_pts, link_name_to_visited, link_name_to_link_struct)
+            expanded_visual_pts = cur_link_struct.expand_visual_pts(expanded_visual_pts, link_name_to_visited, link_name_to_link_struct, expand_factor=expand_factor, nn_expand_pts=nn_expand_pts)
         return expanded_visual_pts
     
     def set_initial_state(self, states, action_joint_name_to_joint_idx, link_name_to_visited, link_name_to_link_struct):
@@ -1119,7 +1125,7 @@ class Robot_urdf:
         pass
     
     # robot.expande
-    def expand_visual_pts(self, ):
+    def expand_visual_pts(self, expand_factor=0.1, nn_expand_pts=10):
         link_name_to_visited = {}
         # transform the visual pts #
         # action_joint_name_to_joint_idx = self.actions_joint_name_to_joint_idx
@@ -1128,7 +1134,7 @@ class Robot_urdf:
         palm_link = self.links[palm_idx]
         expanded_visual_pts = []
         # expanded the visual pts # # transformed viusal pts # or the translations of the visual pts #
-        expanded_visual_pts = palm_link.expand_visual_pts(expanded_visual_pts, link_name_to_visited, self.link_name_to_link_struct) 
+        expanded_visual_pts = palm_link.expand_visual_pts(expanded_visual_pts, link_name_to_visited, self.link_name_to_link_struct, expand_factor=expand_factor, nn_expand_pts=nn_expand_pts) 
         expanded_visual_pts = torch.cat(expanded_visual_pts, dim=0)
         # pass 
         return expanded_visual_pts

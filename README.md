@@ -264,11 +264,14 @@ bash scripts_new/train_grab_pointset_points_dyn_s4.sh # substep 4
 
 
 
+
 The time consumption for each substep is listed below, as we tested:
 | Time | `s1` | `s2` | `s3` | `s4` |
 | ---- | ----------------- | ------------------------ | -------------------------------- | -------------------------------- |
 | A800-80G | ~2 hrs 20 mins              |   ~2 hrs                   |          ~3 hrs 15 mins                        |  ~3 hrs 30 mins                        |
 
+
+As for the way of creating the point set representation from an articulated rigid mesh, we sample `nn_expand_pts` uniformly randomly from a ball with the radius controlled by `expand_factor` constructed around each surface point. The point set is then formed by concatenating all such points together. By default, `nn_expand_pts` is set to `10`, while `expand_factor` is `0.1`. Increasing the two parameters will result in a larger point set. Try to adjust them through `.conf` file. We've tested `nn_expand_pts=10;expand_factor=0.1`, `nn_expand_pts=20;expand_factor=0.2`, `nn_expand_pts=40;expand_factor=0.4`, and `nn_expand_pts=80;expand_factor=0.4`. More analysis on them will be added. 
 
 
 

@@ -569,7 +569,19 @@ class Runner:
         else:
             self.optimize_pointset_motion_only = True
             
-        print(f"optimize_dyn_actions: {self.optimize_dyn_actions}")
+        # print(f"optimize_dyn_actions: {self.optimize_dyn_actions}")
+        
+        
+        #### get pointset parameters ###
+        if 'model.pointset_expand_factor' in self.conf:
+            self.pointset_expand_factor = self.conf['model.pointset_expand_factor']
+        else:
+            self.pointset_expand_factor = 0.1
+        
+        if 'model.pointset_nn_expand_pts' in self.conf:
+            self.pointset_nn_expand_pts = self.conf['model.pointset_nn_expand_pts']
+        else:
+            self.pointset_nn_expand_pts = 10
         
 
             
@@ -588,13 +600,6 @@ class Runner:
             GRAB_data_root = os.path.join(GRAB_data_root, f"{self.obj_idx}")
             
             
-            # self.conf['model.obj_sdf_fn'] = os.path.join(GRAB_data_root, f"{self.obj_idx}_obj.npy")
-            # self.conf['model.kinematic_mano_gt_sv_fn'] = os.path.join(GRAB_data_root, f"{self.obj_idx}_sv_dict.npy")
-            # self.conf['model.scaled_obj_mesh_fn'] = os.path.join(GRAB_data_root, f"{self.obj_idx}_obj.obj")
-            # self.conf['model.ckpt_fn'] = ""
-            # self.conf['model.load_optimized_init_transformations'] = ""
-            
-            ## grab data root ##
             
             self.obj_sdf_fn = os.path.join(GRAB_data_root, f"{self.obj_idx}_obj.npy")
             self.kinematic_mano_gt_sv_fn =  os.path.join(GRAB_data_root, f"{self.obj_idx}_sv_dict.npy")
