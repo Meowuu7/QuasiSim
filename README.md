@@ -218,7 +218,7 @@ The time consumption for each substep is listed below, as we tested:
 
 **Step 2: Optimizing the control trajectory for the point set constructed from the MANO hand** 
 
-Execute the following the following four substeps. Please note that they cannot be excuted in parallel.
+Execute the following four substeps. Please note that they cannot be excuted in parallel.
 <!-- four commands sequentially for this step: -->
 
 
@@ -293,20 +293,42 @@ The time consumption for this step is about 7 hrs as we tested on a single A800 
 
 **Step 4: Optimizing the control trajectory for the point set constructed from the simulated Shadow hand** 
 
-Please execute the following commands for this step:
+Please execute the following four substeps for this step:
 
+<!-- Execute the following the following four substeps. Please note that they cannot be excuted in parallel. -->
+*Substep 1*: Track MANO's point set via the Shadow hand
+
+Run 
+```Shell
+bash scripts_new/train_grab_pointset_points_dyn_retar.sh
+```
+
+*Substep 2*: Track MANO's point set via the Shadow's point set
+
+Run 
+```Shell
+bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
+```
+
+*Substep 3*: System parameters identification
+
+Run 
+```shell
+bash scripts_new/train_grab_pointset_points_dyn_retar_pts_opts.sh
+```
+<!-- 
 ```shell
 bash scripts_new/train_grab_pointset_points_dyn_retar.sh
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts_opts.sh
-```
+``` -->
 
 <!-- Please note that the point set constructed from the simulated Shadow hand contains 100k+ points, running the last two commands requires GPU memory of at least 56GB. Therefore, in our experiments, this part is conducted on 80GB A800 gpus. 
 
 
 Optimizing the trajectory of the articulated Shadow hand directly is an alternative strategy. Adopting this option requires smaller GPU memory size. A single 3090/4090 with 24GB is enough. Please execute the following commands for this suit of optimization: -->
 
-Please note that the point set constructed from the simulated Shadow hand contains over 100,000 points. Running the last two commands necessitates a GPU memory of at least 56GB. Consequently, in our experiments, this part is conducted using 80GB A800 GPUs.
+Please note that the point set constructed from the simulated Shadow hand contains over 100,000 points. Running the last two substeps necessitates a GPU memory of at least 56GB. Consequently, in our experiments, this part is conducted using 80GB A800 GPUs.
 
 An alternative approach is optimizing the trajectory of the articulated Shadow hand directly. 
 <!-- Optimizing the trajectory of the articulated Shadow hand directly presents an alternative approach. -->
