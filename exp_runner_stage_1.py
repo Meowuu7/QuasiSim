@@ -583,6 +583,8 @@ class Runner:
         else:
             self.pointset_nn_expand_pts = 10
         
+        print(f"[Settings] Setting pointset_expand_factor to {self.pointset_expand_factor}, pointset_nn_expand_pts to {self.pointset_nn_expand_pts}")
+        
 
             
         if 'dataset.obj_idx' in self.conf:
