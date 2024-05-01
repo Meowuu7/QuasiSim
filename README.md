@@ -323,6 +323,13 @@ bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts_opts.sh
 ``` -->
 
+The time consumption for each substep is listed below, as we tested:
+| Time | `retar` | `retar_pts` | `retar_pts_opts` | 
+| ---- | ----------------- | ------------------------ | -------------------------------- | 
+| A800-80G | ~52 mins              |   ~2 hrs                   |          ~2 hrs 20 mins                        |  
+
+
+
 <!-- Please note that the point set constructed from the simulated Shadow hand contains 100k+ points, running the last two commands requires GPU memory of at least 56GB. Therefore, in our experiments, this part is conducted on 80GB A800 gpus. 
 
 
