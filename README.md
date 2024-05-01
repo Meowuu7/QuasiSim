@@ -298,6 +298,13 @@ Please execute the following four substeps for this step:
 <!-- Execute the following the following four substeps. Please note that they cannot be excuted in parallel. -->
 *Substep 1*: Track MANO's point set via the Shadow hand
 
+To utilize the optimized checkpoint from the preceding substep, adjust the arguments in the file `confs_new/dyn_grab_pointset_points_dyn_retar.conf` as follows: 
+- set `ckpt_fn` and `load_optimized_init_actions` to the path of the last saved model in **Step 2**;
+- set `load_optimized_init_transformations` to the path of the last optimized model in **Step 3**. 
+Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
+
+
+
 Run 
 ```Shell
 bash scripts_new/train_grab_pointset_points_dyn_retar.sh
@@ -305,12 +312,23 @@ bash scripts_new/train_grab_pointset_points_dyn_retar.sh
 
 *Substep 2*: Track MANO's point set via the Shadow's point set
 
+To utilize the optimized checkpoint from the preceding substep, adjust the arguments in the file `confs_new/dyn_grab_pointset_points_dyn_retar_pts.conf` as follows: 
+- set `ckpt_fn` and `load_optimized_init_actions` to the path of the last saved model in **Step 2**;
+- set `dyn_grab_pointset_points_dyn_retar_pts` to the path of the last optimized model in  the previous substep.
+Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
+
+
 Run 
 ```Shell
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
 ```
 
 *Substep 3*: System parameters identification
+
+To utilize the optimized checkpoint from the preceding substep, adjust the arguments in the file `confs_new/dyn_grab_pointset_points_dyn_retar_pts.conf` as follows: 
+- set `ckpt_fn` and `load_optimized_init_actions` to the path of the last saved model in **Step 2**;
+- set `dyn_grab_pointset_points_dyn_retar_pts` to the path of the last optimized model in  the previous substep.
+Alternatively, retain these arguments unchanged to utilize our pre-optimized checkpoint.
 
 Run 
 ```shell
