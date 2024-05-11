@@ -156,6 +156,8 @@ In the case of the example sequence `data/grab/102`, which depicts a human hand 
 
 The following instructions aim to optimize the control trajectory to enable the Shadow hand to complete the tracking task, as demonstrated in the middle demo, within the stiffest analytical environment of QuasiSim.
 
+We save checkpoints with robot poses in the folder `checkpoints` of the experiment root folder and mesh/point cloud information in the folder `meshes`. 
+
 ### Stage 1
 > **Transferring human demonstrations via point set dynamics.** In this stage, we represent the MANO model and the Shadow model within the simulation as parameterized point sets. The contact model is adjusted to its softest level. The objective is to optimize a trajectory of point sets for the Shadow hand to successfully accomplish manipulation tracking.
 
@@ -177,6 +179,13 @@ In this step, we optimize a control trajectory for the dynamic MANO hand model t
 bash scripts_new/train_grab_mano.sh # substep 1
 ```
 
+For visualizing the optimized MANO hand meshes together with the object sequences, find the `retargeting_info_${epoch_idx}.npy` in the `${exp_folder}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `retargeting_info_xxx` file. 
+
+
 *Substep 2*: Identify system parameters
 
 <!-- - To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn.conf` to the last one saved in the previous substep (*e.g.,* `exp/_reverse_value_totviews_tag_train_dyn_mano_acts_/checkpoints/ckpt_054060.pth`)
@@ -190,6 +199,14 @@ Run
 bash scripts_new/train_grab_mano_wreact.sh # substep 2
 ```
 
+For visualizing the optimized MANO hand meshes together with the object sequences, find the `hand_obj_verts_faces_sv_dict_${epoch_idx}.npy` in the `${exp_folder}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `hand_obj_verts_faces_sv_dict_xxx` file. 
+
+
+
 *Substep 3*: Optimize for a MANO dynamic trajectory to physically track the demonstration
 
 <!-- - To use the optimized checkpoint in the previous substep, modify arguments `ckpt_fn` and `load_optimized_init_actions` in `confs_new/dyn_grab_pointset_mano_dyn_optacts.conf` to the last one saved in the previous substep.
@@ -202,6 +219,13 @@ Run
 ```shell
 bash scripts_new/train_grab_mano_wreact_optacts.sh # substep 3
 ```
+
+For visualizing the optimized MANO hand meshes together with the object sequences, find the `hand_obj_verts_faces_sv_dict_${epoch_idx}.npy` in the `${exp_folder}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `hand_obj_verts_faces_sv_dict_xxx` file. 
+
 
 
 The time consumption for each substep is listed below, as we tested:
@@ -230,6 +254,8 @@ Run
 ```shell
 bash scripts_new/train_grab_pointset_points_dyn_s1.sh # substep 1 
 ```
+
+
 
 *Substep 2*: Dynamic MANO's point set trajectory optimization
 
@@ -263,6 +289,13 @@ bash scripts_new/train_grab_pointset_points_dyn_s4.sh # substep 4
 ```
 
 
+In each substep, for visualizing the optimized MANO point set together with the object sequences, find the `hand_obj_verts_faces_sv_dict_${epoch_idx}.npy` in the `${exp_folder}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `hand_obj_verts_faces_sv_dict_xxx` file. 
+
+
 
 
 The time consumption for each substep is listed below, as we tested:
@@ -293,6 +326,15 @@ bash scripts_new/train_grab_sparse_retar.sh
 ```
 
 The time consumption for this step is about 7 hrs as we tested on a single A800 gpu. 
+
+
+For visualizing the optimized Shadow hand mesh together with the object sequences, find the `${epoch_idx}.npy` in the `${exp_folder}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `${epoch_idx}.npy` file. 
+
+
 
 **Step 4: Optimizing the control trajectory for the point set constructed from the simulated Shadow hand** 
 
@@ -344,6 +386,15 @@ bash scripts_new/train_grab_pointset_points_dyn_retar_pts.sh
 bash scripts_new/train_grab_pointset_points_dyn_retar_pts_opts.sh
 ``` -->
 
+
+In each substep, for visualizing the optimized Shadow point set together with the object sequences, find the `hand_obj_verts_faces_sv_dict_${epoch_idx}.npy` in the `${exp_folder}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `hand_obj_verts_faces_sv_dict_xxx` file. 
+
+ 
+
 The time consumption for each substep is listed below, as we tested:
 | Time | `retar` | `retar_pts` | `retar_pts_opts` | 
 | ---- | ----------------- | ------------------------ | -------------------------------- | 
@@ -381,6 +432,13 @@ Run the following command:
 ```shell
 bash scripts_new/train_grab_stage_2_dm_curriculum.sh
 ```
+
+In each stage, for visualizing the optimized Shadow hand meshe and the object sequences, find the `hand_obj_verts_faces_sv_dict_${epoch_idx}.npy` in the `${exp_folder}/${curriculum_stage_name}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `hand_obj_verts_faces_sv_dict_xxx` file. 
+
 
 
 <!-- ### Stage 3 -->

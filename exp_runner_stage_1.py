@@ -6040,17 +6040,6 @@ class Runner:
             params_to_train += list(self.robot_delta_states.parameters())
             
         
-        
-        
-        # # # train the robot or train the expanded points #
-        # # first tip | center of the wrist | second tip | thrid tip | fourth tip | fifth tip | left wrist | rigth wrist #
-        # self.mano_fingers = [745, 279, 320, 444, 555, 672, 234, 121]
-        # # self.robot_fingers = [3591, 4768, 6358, 10228, 6629, 10566, 5631, 9673]
-        # self.robot_fingers = [6496, 10128, 53, 1623, 3209, 4495, 9523, 8877]
-        # # self.robot_fingers = [521, 624, 846, 973, 606, 459, 383, 265]
-        # self.mano_fingers = [745, 279, 320, 444, 555, 672, 234, 121, 86, 364, 477, 588]
-        # self.robot_fingers = [6496, 10128, 53, 1623, 3209, 4495, 9523, 8877, 1030, 2266, 3822, 5058]
-        
         self.mano_fingers = [745, 279, 320, 444, 555, 672, 234, 121, 86, 364, 477, 588, 699]
         self.robot_fingers = [6684, 9174, 53, 1623, 3209, 4495, 10028, 8762, 1030, 2266, 3822, 5058, 7074]
         
@@ -7827,7 +7816,7 @@ class Runner:
             robo_intermediates_states_np = self.robo_intermediates_states.numpy()
             robo_intermediates_states_sv_fn = f"robo_intermediates_states_{self.iter_step}.npy"
             robo_intermediates_states_sv_fn = os.path.join(mesh_sv_root_dir, robo_intermediates_states_sv_fn)
-            np.save(robo_intermediates_states_sv_fn, robo_intermediates_states_np) # 
+            np.save(robo_intermediates_states_sv_fn, robo_intermediates_states_np) ## robot 
         except:
             pass
     
@@ -8016,6 +8005,7 @@ class Runner:
         retargeting_info = {
             'ts_to_retargeted_info': ts_to_retargeted_info,
             'obj_verts': obj_verts,
+            'obj_faces': obj_faces_np,
             'hand_faces': hand_faces,
         }
         retargeting_info_sv_fn = 'retargeting_info_{:0>8d}.npy'.format(self.iter_step)
@@ -8093,7 +8083,6 @@ class Runner:
                 ts_to_obj_trans[i_ts] = self.other_bending_network.timestep_to_optimizable_total_def[i_ts].detach().cpu().numpy()
             # 
             ts_to_hand_obj_verts[i_ts] = (cur_rhand_verts_np, cur_transformed_obj) # not correct.... #
-            # tostotrans
             # merged_verts, merged_faces = merge_meshes([cur_rhand_verts_np, cur_transformed_obj, cur_mano_rhand], [hand_faces_np, obj_faces_np, mano_hand_faces_np])
             # if i_ts % 10 == 0:
             #     # print(f"exporting meshes i_ts: {i_ts}, cur_hand_verts_np: {cur_rhand_verts_np.shape}, hand_faces_np: {hand_faces_np.shape}")
@@ -8110,20 +8099,20 @@ class Runner:
             #         mesh.export(os.path.join(mesh_sv_root_dir, mesh_sv_fn))
             #### 
             ##
-        try:
-            timestep_to_anchored_mano_pts = self.timestep_to_anchored_mano_pts
-        except:
-            timestep_to_anchored_mano_pts = {}
+        # try:
+        #     timestep_to_anchored_mano_pts = self.timestep_to_anchored_mano_pts
+        # except:
+        #     timestep_to_anchored_mano_pts = {}
         
-        try:
-            timestep_to_raw_active_meshes = self.timestep_to_raw_active_meshes
-        except:
-            timestep_to_raw_active_meshes = {}
+        # try:
+        #     timestep_to_raw_active_meshes = self.timestep_to_raw_active_meshes
+        # except:
+        #     timestep_to_raw_active_meshes = {}
         
-        try:
-            ts_to_dyn_mano_pts = self.ts_to_dyn_mano_pts
-        except:
-            ts_to_dyn_mano_pts = {}
+        # try:
+        #     ts_to_dyn_mano_pts = self.ts_to_dyn_mano_pts
+        # except:
+        #     ts_to_dyn_mano_pts = {}
         ts_sv_dict = {
             'ts_to_obj_quaternion': ts_to_obj_quaternion,
             'ts_to_obj_rot_mtx': ts_to_obj_rot_mtx,
@@ -8691,54 +8680,6 @@ if __name__ == '__main__':
     bending_net_type = runner.conf['model.bending_net_type']
     
 
-    # if args.mode == 'train':
-    #     runner.train()
-    # elif args.mode == 'train_def': # 
-    #     runner.train_def()
-    # elif args.mode == 'train_from_model_rules': # from model rules #
-    #     runner.train_from_model_rules() # 
-    # elif args.mode == 'train_sdf_from_model_rules':
-    #     runner.train_sdf_from_model_rules()
-    # elif args.mode == 'train_actions_from_model_rules':
-    #     runner.train_actions_from_model_rules()
-    # if args.mode == 'train_mano_actions_from_model_rules':
-    #     runner.train_mano_actions_from_model_rules() ##
-    # elif args.mode == 'train_actions_from_mano_model_rules':
-    #     runner.train_robot_actions_from_mano_model_rules_v3() ##
-    # elif args.mode == 'train_real_robot_actions_from_mano_model_rules': ##
-    #     # runner.train_real_robot_actions_from_mano_model_rules() ##
-    #     # runner.train_real_robot_actions_from_mano_model_rules_v2() ##
-    #     if bending_net_type in ["active_force_field_v15", 'active_force_field_v16']:
-    #         runner.train_real_robot_actions_from_mano_model_rules_v4()
-    #     elif bending_net_type in ["active_force_field_v17"]:
-    #         runner.train_real_robot_actions_from_mano_model_rules_v5() ### train the mano model rules v5 ##
-    #     else: 
-    #         runner.train_real_robot_actions_from_mano_model_rules_v3() ##
-    #     # runner.train_real_robot_actions_from_mano_model_rules_v4() ## train the model rules v4 ##
-    
-    # elif args.mode ==  'train_real_robot_actions_from_mano_model_rules_diffhand':
-    #     runner.train_real_robot_actions_from_mano_model_rules_v5_diffhand() ### trai
-    
-    # elif args.mode ==  'train_real_robot_actions_from_mano_model_rules_diffhand_fortest':
-    #     # train_real_robot_actions_from_mano_model_rules_v5_diffhand_fortest
-    #     runner.train_real_robot_actions_from_mano_model_rules_v5_diffhand_fortest()
-    
-    # elif args.mode == 'train_real_robot_actions_from_mano_model_rules_manohand_fortest':
-    #     # runner.
-    #     runner.train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest()
-    #     # pass
-    # elif args.mode == 'train_real_robot_actions_from_mano_model_rules_manohand_fortest_states':
-    #     runner.train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states()
-        
-    # elif args.mode == "train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states_res_world":
-    #     runner.train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states_res_world()
-    
-    # elif args.mode == "train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states_res_rl":
-    #     runner.train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states_res_rl() ## res rl for test states ##
-    
-    # elif args.mode == "train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states_grab":
-    #     runner.train_real_robot_actions_from_mano_model_rules_v5_manohand_fortest_states_grab()
-    
     
     ############# dynamic mano optimization and the pointset representation trajectory optimization #############
     ########## Dynamic MANO optimization ##########
@@ -8756,42 +8697,16 @@ if __name__ == '__main__':
     ########## Retargeting -- Expanded set motion retargeting ##########
     elif args.mode == "train_point_set_retar": ### retargeting ###
         runner.train_point_set_retargeting() ### retargeting ###
-    ############# dynamic mano optimization and the pointset representation trajectory optimization ############# ## optimization ##
+
     
     ########## Retargeting -- Expanded set motion retargeting ##########
     elif args.mode == "train_point_set_retar_pts": ### retargeting ###
         runner.train_point_set_retargeting_pts() ### retargeting ###
-    ############# dynamic mano optimization and the pointset representation trajectory optimization ############# ## optimization ##
+
     
     ########## Retargeting -- GRAB & TACO ##########
     elif args.mode == 'train_sparse_retar':
         runner.train_sparse_retar()
-    
-    # ########## Retargeting -- ARCTIC ##########
-    # elif args.mode == "train_finger_kinematics_retargeting_arctic_twohands":
-    #     runner.train_finger_kinematics_retargeting_arctic_twohands()
-        
-    # ########## GRAB & TACO ##########
-    # elif args.mode == "train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab":
-    #     # runner.train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab()
-    #     if runner.use_multi_stages: # try the actons 
-    #         runner.train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab_multi_stages()
-    #     else:
-    #         runner.train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab()
-    
-    # ########## ARCTIC ##########
-    # elif args.mode == "train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_arctic_twohands":
-    #     if runner.use_multi_stages: # try the
-    #         runner.train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_arctic_twohands_multi_stages()
-    #     else:
-    #         runner.train_real_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_arctic_twohands()
-    
-    # elif args.mode == "train_real_robot_actions_from_mano_model_rules_shadowhand":
-    #     runner.train_real_robot_actions_from_mano_model_rules_shadowhand()
-    
-    
-    # elif args.mode == "train_redmax_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab":
-    #     runner.train_redmax_robot_actions_from_mano_model_rules_v5_shadowhand_fortest_states_grab()
     
 
 
