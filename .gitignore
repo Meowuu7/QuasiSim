@@ -29,6 +29,8 @@ get-pip.py
 
 test.py
 
+*_local.py
+
 
 #### old scripts and data&exp folders ###
 scripts/

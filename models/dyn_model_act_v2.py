@@ -171,6 +171,9 @@ class Visual:
             mesh_root = "rsc/redmax_hand"
             if not os.path.exists(mesh_root):
                 mesh_root = "rsc/redmax_hand"
+        elif "allegro" in urdf_fn:
+            mesh_root = "rsc/allegro_hand_description/urdf"
+            
             
         self.mesh_root = mesh_root
         geometry_mesh_fn = geometry_mesh_fn.replace(".dae", ".obj")
@@ -727,7 +730,7 @@ class Joint_Limit:
 # Joint_urdf(name, joint_type, parent_link, child_link, origin_xyz, axis_xyz, limit: Joint_Limit)
 class Joint_urdf: # 
     
-    def __init__(self, name, joint_type, parent_link, child_link, origin_xyz, axis_xyz, limit: Joint_Limit, origin_xyz_string="") -> None:
+    def __init__(self, name, joint_type, parent_link, child_link, origin_xyz, origin_rpy, axis_xyz, limit: Joint_Limit, origin_xyz_string="") -> None:
         self.name = name
         self.type = joint_type
         self.parent_link = parent_link
@@ -735,6 +738,10 @@ class Joint_urdf: #
         self.origin_xyz = origin_xyz
         self.axis_xyz = axis_xyz
         self.limit = limit
+        self.origin_rpy = origin_rpy
+        
+        self.joint_rot_mtx = R.from_euler('xyz', origin_rpy.detach().cpu().numpy(), degrees=False).as_matrix()
+        self.joint_rot_mtx = torch.from_numpy(self.joint_rot_mtx).float().cuda()
         
         self.origin_xyz_string = origin_xyz_string
         
@@ -824,6 +831,11 @@ class Joint_urdf: #
             trans_vec = self.origin_xyz - torch.matmul(rot_mtx, self.origin_xyz.view(3, 1)).view(3).contiguous()
             self.rot_mtx = rot_mtx
             self.trans_vec = trans_vec
+            
+            self.rot_mtx = torch.matmul(self.joint_rot_mtx, self.rot_mtx)
+            # self.trans_vec = torch.matmul(self.joint_rot_mtx, self.trans_vec.unsqueeze(-1)).squeeze(-1) + self.origin_xyz
+            self.trans_vec = self.origin_xyz - torch.matmul(self.rot_mtx, self.origin_xyz.view(3, 1)).view(3).contiguous()
+            
         elif self.type == "fixed":
             rot_mtx = torch.eye(3, dtype=torch.float32).cuda()
             trans_vec = torch.zeros((3,), dtype=torch.float32).cuda()
@@ -1517,9 +1529,21 @@ def parse_link_data_urdf(link):
     
     if visual is not None:
         origin = visual.find("./origin")
-        visual_pos = origin.attrib["xyz"]
+        if origin is not None:
+            if "xyz" in origin.attrib:
+                visual_pos = origin.attrib["xyz"]
+            else:
+                visual_pos = "0 0 0"
+            
+            if "rpy" in origin.attrib:
+                visual_rpy =  origin.attrib["rpy"]
+            else:
+                visual_rpy = "0 0 0"
+        else:
+            visual_pos = "0 0 0"
+            visual_rpy = "0 0 0"
+        # visual_rpy = origin.attrib["rpy"]
         visual_pos = parse_nparray_from_string(visual_pos)
-        visual_rpy = origin.attrib["rpy"]
         visual_rpy = parse_nparray_from_string(visual_rpy)
         geometry = visual.find("./geometry")
         geometry_mesh = geometry.find("./mesh")
@@ -1559,6 +1583,14 @@ def parse_joint_data_urdf(joint):
         origin_xyz = torch.tensor([0., 0., 0.], dtype=torch.float32).cuda()
         origin_xyz_string = ""
         
+    try:
+        origin_rpy_string = joint_origin.attrib["rpy"]
+        origin_rpy = parse_nparray_from_string(origin_rpy_string)
+    except:
+        origin_rpy = torch.tensor([0., 0., 0.], dtype=torch.float32).cuda()
+        origin_rpy_string = ""
+        
+        
     joint_axis = joint.find("./axis")
     if joint_axis is not None:
         joint_axis = joint_axis.attrib["xyz"]
@@ -1587,7 +1619,7 @@ def parse_joint_data_urdf(joint):
     
     # cosntruct the joint data #      
     joint_limit = Joint_Limit(effort=joint_effort, lower=joint_lower, upper=joint_upper, velocity=joint_velocity)
-    cur_joint_struct = Joint_urdf(joint_name, joint_type, parent_name, child_name, origin_xyz, joint_axis, joint_limit, origin_xyz_string)
+    cur_joint_struct = Joint_urdf(joint_name, joint_type, parent_name, child_name, origin_xyz, origin_rpy, joint_axis, joint_limit, origin_xyz_string)
     return cur_joint_struct
     
 
@@ -2411,7 +2443,7 @@ def calibreate_urdf_files_left_hand(urdf_fn):
         # origin_str = " ".join(origin_list)
         # print(f"name: {cur_joint.name}, cur_joint_origin: {origin_str}")
 
-def calibreate_urdf_files_v4(urdf_fn, dst_urdf_fn):
+def calibreate_urdf_files_v4(urdf_fn, dst_urdf_fn, scale_factor=0.25):
     # active_robot =  parse_data_from_urdf(xml_fn)
     active_robot =  parse_data_from_urdf(urdf_fn)
     tot_joints = active_robot.tot_joints
@@ -2429,7 +2461,7 @@ def calibreate_urdf_files_v4(urdf_fn, dst_urdf_fn):
     for cur_joint in tot_joints:
         # print(f"type: {cur_joint.type}, origin: {cur_joint.origin_xyz}")
         cur_joint_origin = cur_joint.origin_xyz
-        modified_joint_origin = cur_joint_origin / 4.
+        modified_joint_origin = cur_joint_origin * scale_factor
         
         origin_list = cur_joint_origin.detach().cpu().tolist()
         origin_list = [str(cur_val) for cur_val in origin_list]
@@ -2438,8 +2470,8 @@ def calibreate_urdf_files_v4(urdf_fn, dst_urdf_fn):
         dst_list = modified_joint_origin.detach().cpu().tolist()
         dst_list = [str(cur_val) for cur_val in dst_list]
         dst_str = " ".join(dst_list)
-        
-        urdf_string = urdf_string.replace(origin_str, dst_str)
+        print(cur_joint.name, origin_str, dst_str)
+        urdf_string = urdf_string.replace(cur_joint.origin_xyz_string, dst_str)
     
     with open(dst_urdf_fn, "w") as wf:
         wf.write(urdf_string)
@@ -2476,8 +2508,59 @@ def get_states(gt_ref_data_fn):
     states = np.load(gt_ref_data_fn, allow_pickle=True).item()
     return states['target']
 
+def scale_objs(obj_root_folder, scale_factor):
+    tot_obj_fns = os.listdir(obj_root_folder)
+    tot_obj_fns = [fn for fn in tot_obj_fns if fn.endswith(".obj")]
+    for cur_obj_fn in tot_obj_fns:
+        cur_full_obj_fn = os.path.join(obj_root_folder, cur_obj_fn)
+        cur_obj_mesh = trimesh.load(cur_full_obj_fn, force='mesh')
+        cur_obj_vertices, cur_obj_faces = cur_obj_mesh.vertices, cur_obj_mesh.faces
+        scaled_obj_vertices = cur_obj_vertices * scale_factor
+        scaled_obj_mesh = trimesh.Trimesh(vertices=scaled_obj_vertices, faces=cur_obj_faces)
+        scaled_obj_sv_name = cur_obj_fn.replace(".obj", f"_scaled_{scale_factor}.obj")
+        scaled_obj_sv_fn = os.path.join(obj_root_folder, scaled_obj_sv_name)
+        scaled_obj_mesh.export(scaled_obj_sv_fn)
+        print(f"scaled_obj_sv_fn: {scaled_obj_sv_fn}")
+
 #### Big TODO: the external contact forces from the manipulated object to the robot ####
 if __name__=='__main__': # # #
+    
+    # obj_root_folder = "/home/xueyi/diffsim/QuasiSim-Release/rsc/allegro_hand_description/meshes"
+    # scale_factor = 1.0 / 1.25
+    # scale_objs(obj_root_folder, scale_factor)
+    # exit(0)
+    # # 
+    # urdf_fn, dst_urdf_fn, scale_factor=0.25
+    # urdf_fn =  "/home/xueyi/diffsim/QuasiSim-Release/rsc/allegro_hand_description/urdf/allegro_hand_description_right.urdf"
+    # dst_urdf_fn = f"/home/xueyi/diffsim/QuasiSim-Release/rsc/allegro_hand_description/urdf/allegro_hand_description_right_scale_1d25.urdf"
+    # scale_factor = 1.0 / 1.25
+    # calibreate_urdf_files_v4(urdf_fn, dst_urdf_fn, scale_factor)
+    # exit(0)
+    
+    
+    # /home/xueyi/diffsim/QuasiSim-Release/rsc/allegro_hand_description/urdf/allegro_hand_description_right.urdf
+    rgt_allegro_hand_urdf_fn = "/home/xueyi/diffsim/QuasiSim-Release/rsc/allegro_hand_description/urdf/allegro_hand_description_right.urdf"
+    
+    rgt_allegro_hand_urdf_fn = "/home/xueyi/diffsim/QuasiSim-Release/rsc/allegro_hand_description/urdf/allegro_hand_description_right_scale_1d25.urdf"
+    
+    robot_agent = RobotAgent(rgt_allegro_hand_urdf_fn)
+    
+    ####### get posed robot #######
+    rnd_states = torch.randn((22), dtype=torch.float32).cuda()
+    robot_agent.active_robot.set_delta_state_and_update_v2(rnd_states, 0)
+    init_vertices, init_faces = robot_agent.active_robot.get_init_visual_pts()
+    ###### get posed robot #######
+    
+    # init_vertices, init_faces = robot_agent.active_robot.init_vertices, robot_agent.active_robot.init_faces
+    
+    # init_vertices = init_vertices.detach().cpu().numpy()
+    # init_faces = init_faces.detach().cpu().numpy()
+    # print(f"init_vertices: {init_vertices.shape}, init_faces: {init_faces.shape}")
+    # shadow_hand_mesh = trimesh.Trimesh(vertices=init_vertices, faces=init_faces)
+    # # shadow_hand_sv_fn = "raw_data/shadow_hand_lft.obj"
+    # shadow_hand_sv_fn = "raw_data/allegro_hand_scaled_posed.obj"
+    # shadow_hand_mesh.export(shadow_hand_sv_fn)
+    # exit(0)
     
     gt_ref_data_fn = "/home/xueyi/diffsim/Control-VAE/Data/ReferenceData/shadow_grab_train_split_85_bunny_wact_data.npy"
     # mano_glb_rot, glb_trans, states = test_gt_ref_data(gt_ref_data_fn)
@@ -2596,6 +2679,7 @@ if __name__=='__main__': # # #
     
     ## 
     lft_urdf_fn = "rsc/redmax_hand/redmax_hand_test_3_wcollision.urdf"
+    # /home/xueyi/diffsim/QuasiSim-Release/rsc/allegro_hand_description/urdf/allegro_hand_description_right.urdf
     
     robot_agent = RobotAgent(lft_urdf_fn)
     init_vertices, init_faces = robot_agent.active_robot.init_vertices, robot_agent.active_robot.init_faces

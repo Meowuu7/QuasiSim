@@ -601,6 +601,8 @@ class Runner:
             GRAB_data_root = "data/grab"
             GRAB_data_root = os.path.join(GRAB_data_root, f"{self.obj_idx}")
             
+            if not os.path.exists(GRAB_data_root):
+                GRAB_data_root = "/data1/xueyi/GRAB_extracted_test/train"
             
             
             self.obj_sdf_fn = os.path.join(GRAB_data_root, f"{self.obj_idx}_obj.npy")
@@ -609,9 +611,9 @@ class Runner:
             # self.ckpt_fn =  self.conf['model.ckpt_fn']
             # self.load_optimized_init_transformations =  self.conf['model.load_optimized_init_transformations']
             
-            print(f"obj_sdf_fn:", self.obj_sdf_fn)
-            print(f"kinematic_mano_gt_sv_fn:", self.kinematic_mano_gt_sv_fn)
-            print(f"scaled_obj_mesh_fn:", self.scaled_obj_mesh_fn)
+        print(f"obj_sdf_fn:", self.obj_sdf_fn)
+        print(f"kinematic_mano_gt_sv_fn:", self.kinematic_mano_gt_sv_fn)
+        print(f"scaled_obj_mesh_fn:", self.scaled_obj_mesh_fn)
             
         
             
@@ -950,6 +952,7 @@ class Runner:
         
         
         transformed_obj_verts = []
+        print(f"object_global_orient: {object_global_orient.shape}")
         for i_fr in range(object_global_orient.shape[0]):
             cur_glb_rot = object_global_orient[i_fr]
             cur_transl = object_transl[i_fr]
@@ -1031,7 +1034,7 @@ class Runner:
     
     
     def load_active_passive_timestep_to_mesh_v3_taco(self, ):
-        sv_fn = "/data1/xueyi/GRAB_extracted_test/test/30_sv_dict.npy"
+        # sv_fn = "/data1/xueyi/GRAB_extracted_test/test/30_sv_dict.npy"
         # /data1/xueyi/GRAB_extracted_test/train/20_sv_dict_real_obj.obj # data1
         
         # start_idx = 40
@@ -1047,6 +1050,7 @@ class Runner:
         
         ### get hand faces ###
         ''' Loading mano template '''
+        ## mano hand template for the faces ##
         mano_hand_template_fn = 'assets/mano_hand_template.obj'
         if not os.path.exists(mano_hand_template_fn):
             box_sv_fn = "/data2/xueyi/arctic_processed_data/processed_sv_dicts/s01/box_grab_01_extracted_dict.npy"
@@ -5865,10 +5869,14 @@ class Runner:
         self.nn_timesteps = nn_timesteps
         num_steps = self.nn_timesteps
         
+        
         # load 
         ''' Load the robot hand '''
         model_path = self.conf['model.sim_model_path']
         self.hand_type = "shadow_hand"
+        
+        if "allegro" in model_path:
+            self.hand_type = "allegro_hand"
         # if model_path.endswith(".xml"):
         #     # self.hand_type = "redmax_hand"
         #     robot_agent = dyn_model_act.RobotAgent(xml_fn=model_path, args=None)
@@ -6044,6 +6052,16 @@ class Runner:
         self.robot_fingers = [6684, 9174, 53, 1623, 3209, 4495, 10028, 8762, 1030, 2266, 3822, 5058, 7074]
         
         
+        if self.hand_type == "allegro_hand":
+            print(f"Using allegro hands")
+            # self.robot_fingers = [5450, 6372, 12796, 12797, 3692, 3677, 3646]
+            # self.robot_fingers = [8681, 504, 3212, 5924, 12619, 12604, 12577]
+            # self.mano_fingers = [745, 353, 467, 578, 92, 121, 117]
+            
+            self.robot_fingers = [8681, 504, 3212, 5924, 12619, 12604, 12577, 1245, 4041, 6516]
+            self.mano_fingers = [745, 353, 467, 578, 92, 121, 117, 86, 364, 476]
+        
+        
         # self.minn_robo_pts = -0.1
         # self.maxx_robo_pts = 0.2
         # self.extent_robo_pts = self.maxx_robo_pts - self.minn_robo_pts
@@ -6100,6 +6118,8 @@ class Runner:
         finger_sampled_idxes = None
         
         minn_dist_mano_pts_to_visual_pts_idxes = None
+        
+        print(f"nn_ts: {self.nn_ts}")
         
         for i_iter in tqdm(range(tot_retar_eps)):
             tot_losses = []
