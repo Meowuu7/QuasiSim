@@ -5,7 +5,7 @@
 
 ### [Project](https://meowuu7.github.io/QuasiSim/) | [Gradio Demo](https://huggingface.co/spaces/xymeow7/quasi-physical-sims) | [Video](https://youtu.be/Pho3KisCsu4)
 
-The implementation of the paper [**QuasiSim**](https://meowuu7.github.io/QuasiSim/), presenting a parameterized family of quasi-physical simulators for transferring **kinematics-only human manipulation** demonstrations to **dexterous robot hand simulations**.
+The implementation of [**QuasiSim**](https://meowuu7.github.io/QuasiSim/) (ECCV'24, with all three initial accepts ratings), presenting a parameterized family of quasi-physical simulators for transferring **kinematics-only human manipulation** demonstrations to **dexterous robot hand simulations**.
 <!-- We tackle the optimization challenge posed by the complex dynamics inherent in dexterous manipulation by solving the control trajectory optimization problem through a physics curriculum. -->
 
 <!-- We tackle the optimization challenge posed by the intricate dynamics involved in the dexterous manipulation via gradually solving the control trajectory optimization problem through a physics curriculum.  -->
@@ -21,9 +21,10 @@ We enable accurately controlling a simulated dexterous robot hand to track compl
 
 The repository contains 
 - Analytical part of the parameterized quasi-physical simulator; 
-- Detailed instructions on the optimization process for a manipulation sequence example (first two stages). 
+- Detailed instructions on the optimization process for a manipulation sequence example (first two stages);
+- Hybrid part with PyBullet;
 
-We will add the remaining code and instructions on the last optimization stage, as well as the data and more manipulation examples. 
+We will add the remaining code and instructions, as well as the data and more manipulation examples. 
 <!-- We will add the data and the evaluation process for the remaining test datasets, as well as the training procedure. These updates are expected to be completed before May 2024. -->
 
 
@@ -439,6 +440,21 @@ python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
 ```
 where `saved_tracking_info_fn` should be set to the last saved optimized `hand_obj_verts_faces_sv_dict_xxx` file. 
 
+### Stage 3
+> **Tracking via iterative hybrid sim model training and trajectory optimization** 
+ <!-- In this stage, we optimize the control trajectory of the simulated Shadow hand to complete the tracking task through a curriculum of contact models. Initially, the contact model is tuned to the softest level. Subsequently, we gradually adjust parameters to tune it to the stiffest level. -->
+
+Run the following command: 
+```shell
+bash scripts_new/run_train_policy_hoi_wana.sh
+```
+<!-- 
+In each stage, for visualizing the optimized Shadow hand meshe and the object sequences, find the `hand_obj_verts_faces_sv_dict_${epoch_idx}.npy` in the `${exp_folder}/${curriculum_stage_name}/meshes` folder saved from the last optimization loop (with the largest `epoch_idx`) and run the following command:
+```shell
+python visualize/vis_tracking.py --tracking_info_fn=${saved_tracking_info_fn}
+```
+where `saved_tracking_info_fn` should be set to the last saved optimized `hand_obj_verts_faces_sv_dict_xxx` file.  -->
+
 
 
 <!-- ### Stage 3 -->
@@ -448,8 +464,9 @@ where `saved_tracking_info_fn` should be set to the last saved optimized `hand_o
 
 - [x] Analytical part of QuasiSim
 - [x] Optimization example
+- [x] Hybrid part of QuasiSim with PyBullet
 - [ ] More examples
-- [ ] Full version of QuasiSim
+<!-- - [ ] Full version of QuasiSim -->
 - [ ] Custimizing your optimization
 
 
@@ -475,7 +492,7 @@ If you find this code useful in your research, please cite:
 ## Acknowledgments
 
 This code is standing on the shoulders of giants. We want to thank the following contributors
-that our code is based on: [DiffHand](https://github.com/eanswer/DiffHand) and [NeuS](https://github.com/Totoro97/NeuS).
+that our code is based on: [DiffHand](https://github.com/eanswer/DiffHand), [NeuS](https://github.com/Totoro97/NeuS) and [ControlVAE](https://github.com/heyuanYao-pku/Control-VAE). 
 
 ## License
 This code is distributed under an [MIT LICENSE](LICENSE).
