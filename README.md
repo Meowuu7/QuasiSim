@@ -5,7 +5,7 @@
 
 ### [Project](https://meowuu7.github.io/QuasiSim/) | [Gradio Demo](https://huggingface.co/spaces/xymeow7/quasi-physical-sims) | [Video](https://youtu.be/Pho3KisCsu4)
 
-The implementation of [**QuasiSim**](https://meowuu7.github.io/QuasiSim/) (ECCV'24, with all three initial accept ratings), presenting a parameterized family of quasi-physical simulators for transferring **kinematics-only human manipulation** demonstrations to **dexterous robot hand simulations**.
+The implementation of [**QuasiSim**](https://meowuu7.github.io/QuasiSim/) (ECCV'24, with all three accept initial ratings), presenting a parameterized family of quasi-physical simulators for transferring **kinematics-only human manipulation** demonstrations to **dexterous robot hand simulations**.
 <!-- We tackle the optimization challenge posed by the complex dynamics inherent in dexterous manipulation by solving the control trajectory optimization problem through a physics curriculum. -->
 
 <!-- We tackle the optimization challenge posed by the intricate dynamics involved in the dexterous manipulation via gradually solving the control trajectory optimization problem through a physics curriculum.  -->
