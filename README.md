@@ -465,6 +465,7 @@ where `saved_tracking_info_fn` should be set to the last saved optimized `hand_o
 - [x] Analytical part of QuasiSim
 - [x] Optimization example
 - [x] Hybrid part of QuasiSim with PyBullet
+- [ ] Remaining code of the hybrid part
 - [ ] More examples
 <!-- - [ ] Full version of QuasiSim -->
 - [ ] Custimizing your optimization
