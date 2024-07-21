@@ -114,6 +114,7 @@ data
      ...
 ```
 
+Download the [ReferenceData](https://1drv.ms/f/s!AgSPtac7QUbHgWkYswOe2PGbZVFg?e=22QnlE) and put them in the folder `./ReferenceData`. 
 
 
 **Checkpoints**
@@ -449,6 +450,22 @@ where `saved_tracking_info_fn` should be set to the last saved optimized `hand_o
 ### Stage 3
 > **Tracking via iterative hybrid sim model training and trajectory optimization** 
  <!-- In this stage, we optimize the control trajectory of the simulated Shadow hand to complete the tracking task through a curriculum of contact models. Initially, the contact model is tuned to the softest level. Subsequently, we gradually adjust parameters to tune it to the stiffest level. -->
+
+
+**Further Installations:**
+- `mpi4py`: 
+    ```shell
+    # may require a system package dependency
+    sudo apt install libopenmpi-dev
+    # then install the package using pip
+    pip install mpi4py
+    # if this can still not work, try to install it using conda
+    conda install -c conda-forge mpi4py mpich
+    ```
+- `pybullet`:
+    ```shell
+    pip install pybullet
+    ```
 
 Run the following command: 
 ```shell

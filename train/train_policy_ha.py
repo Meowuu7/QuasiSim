@@ -1,7 +1,7 @@
 import os
 # import utils.pytorch_utils as ptu
 from ControlVAECore.Env.bullet_hoi_track_env import VCLODETrackEnv
-from ControlVAECore.Env.analytical_hoi_track_env import VCLODETrackEnv as VCLODETrackEnvAna
+# from ControlVAECore.Env.analytical_hoi_track_env import VCLODETrackEnv as VCLODETrackEnvAna
 from ControlVAECore.Env.bullet_hoi_track_env_twohands import VCLODETrackEnv as VCLODETrackEnvAnaTwoHands
 import numpy as np
 import wandb
@@ -14,80 +14,86 @@ from train import control_vae_hoi_wana_twohands
 # from train.diffusion_policy import PolicyAgent
 # from utils.model_util import create_gaussian_diffusion
 
-import hydra
-from omegaconf import DictConfig, OmegaConf
-from datetime import datetime
-from omegaconf import open_dict
-from isaacgymenvs.utils.reformat import omegaconf_to_dict, print_dict
-from isaacgymenvs.utils.utils import set_np_formatting, set_seed
+# import hydra
+# from omegaconf import DictConfig, OmegaConf
+# from datetime import datetime
+# from omegaconf import open_dict
+# from isaacgymenvs.utils.reformat import omegaconf_to_dict, print_dict
+# from isaacgymenvs.utils.utils import set_np_formatting, set_seed
 
 
-def launch_rlg_hydra():
+##### Unorganized part #####
+# def launch_rlg_hydra():
     
 
     
-    cfg = load_hydra_conf("../isaacgymenvs/cfg", "config")
+#     cfg = load_hydra_conf("../isaacgymenvs/cfg", "config")
 
 
-    import isaacgymenvs
+#     import isaacgymenvs
 
-    with open_dict(cfg):
-        cfg.task.test = cfg.test
+#     with open_dict(cfg):
+#         cfg.task.test = cfg.test
         
-    time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    run_name = f"{cfg.wandb_name}_{time_str}"
+#     time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+#     run_name = f"{cfg.wandb_name}_{time_str}"
 
-    # # ensure checkpoints can be specified as relative paths
-    # if cfg.checkpoint:
-    #     cfg.checkpoint = to_absolute_path(cfg.checkpoint)
+#     # # ensure checkpoints can be specified as relative paths
+#     # if cfg.checkpoint:
+#     #     cfg.checkpoint = to_absolute_path(cfg.checkpoint)
 
-    cfg_dict = omegaconf_to_dict(cfg)
-    print_dict(cfg_dict)
+#     cfg_dict = omegaconf_to_dict(cfg)
+#     print_dict(cfg_dict)
 
-    # set numpy formatting for printing only
-    set_np_formatting()
+#     # set numpy formatting for printing only
+#     set_np_formatting()
 
-    # global rank of the GPU
-    global_rank = int(os.getenv("RANK", "0"))
+#     # global rank of the GPU
+#     global_rank = int(os.getenv("RANK", "0"))
 
-    # sets seed. if seed is -1 will pick a random one
-    cfg.seed = set_seed(cfg.seed, torch_deterministic=cfg.torch_deterministic, rank=global_rank)
+#     # sets seed. if seed is -1 will pick a random one
+#     cfg.seed = set_seed(cfg.seed, torch_deterministic=cfg.torch_deterministic, rank=global_rank)
     
     
-    envs = isaacgymenvs.make(
-        cfg.seed, 
-        cfg.task_name, 
-        cfg.task.env.numEnvs, 
-        cfg.sim_device,
-        cfg.rl_device,
-        cfg.graphics_device_id,
-        cfg.headless,
-        cfg.multi_gpu,
-        cfg.capture_video,
-        cfg.force_render,
-        cfg,
-    )
-    if cfg.capture_video:
-        envs.is_vector_env = True
-        envs = gym.wrappers.RecordVideo(
-            envs,
-            f"videos/{run_name}",
-            step_trigger=lambda step: step % cfg.capture_video_freq == 0,
-            video_length=cfg.capture_video_len,
-        )
+#     envs = isaacgymenvs.make(
+#         cfg.seed, 
+#         cfg.task_name, 
+#         cfg.task.env.numEnvs, 
+#         cfg.sim_device,
+#         cfg.rl_device,
+#         cfg.graphics_device_id,
+#         cfg.headless,
+#         cfg.multi_gpu,
+#         cfg.capture_video,
+#         cfg.force_render,
+#         cfg,
+#     )
+#     if cfg.capture_video:
+#         envs.is_vector_env = True
+#         envs = gym.wrappers.RecordVideo(
+#             envs,
+#             f"videos/{run_name}",
+#             step_trigger=lambda step: step % cfg.capture_video_freq == 0,
+#             video_length=cfg.capture_video_len,
+#         )
         
-    act_dim = envs.num_hand_acts
-    return envs
+#     act_dim = envs.num_hand_acts
+#     return envs
 
 
-def load_hydra_conf(conf_path, conf_name="config"):
-    from hydra import compose, initialize
-    from omegaconf import OmegaConf
-    with initialize(version_base=None, config_path=conf_path, job_name="test_app"):
-        cfg = compose(config_name=conf_name, overrides=["db=mysql", "db.user=me"])
 
-    cfg = OmegaConf.to_yaml(cfg)
-    return cfg
+
+# def load_hydra_conf(conf_path, conf_name="config"):
+#     from hydra import compose, initialize
+#     from omegaconf import OmegaConf
+#     with initialize(version_base=None, config_path=conf_path, job_name="test_app"):
+#         cfg = compose(config_name=conf_name, overrides=["db=mysql", "db.user=me"])
+
+#     cfg = OmegaConf.to_yaml(cfg)
+#     return cfg
+
+##### Unorganized part #####
+
 
 if __name__ == '__main__':
     args = train_policy_args()
@@ -132,48 +138,37 @@ if __name__ == '__main__':
             
             
     
-    if args['use_ana']:
-        env = VCLODETrackEnvAna(**args)
+    # if args['use_ana']:
+    #     env = VCLODETrackEnvAna(**args)
+    # else:
+    # if args['use_isaac']:
+    #     print("Using isaac!")
+    #     # from isaacgymenvs.tasks.
+    #     env = launch_rlg_hydra()
+    # else:
+    
+    
+    if args['policy_model'] == 'control_vae_twohands':
+        env = VCLODETrackEnvAnaTwoHands(**args)   
     else:
-        if args['use_isaac']:
-            print("Using isaac!")
-            # from isaacgymenvs.tasks.
-            env = launch_rlg_hydra()
-        else:
-            if args['policy_model'] == 'control_vae_twohands':
-                env = VCLODETrackEnvAnaTwoHands(**args)   
-            else:
-                env = VCLODETrackEnv(**args)   
-    diffusion = None # create_gaussian_diffusion(args)
+        env = VCLODETrackEnv(**args)   
     
-    # logger.log('Training...')
     
-    # if args['policy_model'] == 'diffusion_policy':
-    #     PolicyAgent = diffusion_policy.PolicyAgent
     if args['policy_model'] == 'control_vae':
         PolicyAgent = control_vae_hoi_wana.PolicyAgent
     elif args['policy_model'] == 'control_vae_twohands':
         PolicyAgent = control_vae_hoi_wana_twohands.PolicyAgent
-    # elif args['policy_model'] == 'ppo':
-    #     PolicyAgent = rl_ppo.PolicyAgent
-    # elif args['policy_model'] == 'superTrack':
-    #     PolicyAgent = superTrack.PolicyAgent
-    # elif args['policy_model'] == 'ablation':
-    #     PolicyAgent = ablation.PolicyAgent
     else:
         raise NotImplementedError
     
     nn_obs = env.bullet_mano_num_joints + 3 + 4
-    if args['use_ana']:
-        nn_act = env.bullet_mano_num_joints - 1
-    else:
-        nn_act = env.bullet_mano_num_joints
+
+    
+    nn_act = env.bullet_mano_num_joints
     nn_delta = env.bullet_mano_num_joints + 3 + 3
     
-    # observation_size, action_size, delta_size, env, diffusion, **kargs)
     
-    # python train/train_policy_hoi.py
-    # 'mano_trans', 'mano_rot', 'mano_states', 'obj_rot', 'obj_trans'
+
     keys = ['mano_trans', 'mano_rot', 'mano_states', 'obj_rot', 'obj_trans']
     for k in keys:
         args[f'world_model_weight_{k}'] = 1.0
@@ -188,6 +183,8 @@ if __name__ == '__main__':
         action_size=nn_act,
         delta_size=nn_delta,
         env=env,
-        diffusion=diffusion,
+        diffusion=None,
         **args,
     ).run_loop()
+    
+    # python train/train_policy_hoi.py

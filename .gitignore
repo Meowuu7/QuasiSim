@@ -31,6 +31,8 @@ test.py
 
 *_local.py
 
+wandb/
+
 
 #### old scripts and data&exp folders ###
 scripts/

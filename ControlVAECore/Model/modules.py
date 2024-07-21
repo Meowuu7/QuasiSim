@@ -36,7 +36,7 @@ from typing import List
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from opt_einsum import contract
+# from opt_einsum import contract
 import math
 from ControlVAECore.Utils.pytorch_utils import *
 import numpy as np
