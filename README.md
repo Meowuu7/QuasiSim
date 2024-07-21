@@ -31,7 +31,7 @@ We will add the remaining code and instructions, as well as the data and more ma
 
 - :hugs: **2024/07/07**: Analytical-PyBullet hybrid part has been released.
 - 🎉 **2024/07/02**: QuasiSim is accpeted to ECCV 2024! 
-- :robot: **2024/05/17**: We've conducted real robot trajectory replay expeirments on an Allegro Hand to validate the real world applicability of QuasiSim. Check [the website](https://meowuu7.github.io/QuasiSim/) for videos. 
+- :robot: **2024/05/17**: We've conducted real robot trajectory replay expeirments on an Allegro Hand to validate the real world applicability of QuasiSim. Check [the website](https://meowuu7.github.io/QuasiSim/) for videos. Very grateful for the hardward support from Prof. Rui Chen's team!
 - :rocket: **2024/04/15**: First version code released!
 
 ## Getting Started
@@ -490,9 +490,8 @@ where `saved_tracking_info_fn` should be set to the last saved optimized `hand_o
 - [x] Hybrid part of QuasiSim with PyBullet
 - [ ] Remaining code of the hybrid part
 - [ ] More examples
-<!-- - [ ] Full version of QuasiSim -->
 - [ ] Custimizing your optimization
-
+<!-- - [ ] Full version of QuasiSim -->
 
 
 ## Contact
