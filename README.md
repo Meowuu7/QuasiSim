@@ -27,6 +27,12 @@ The repository contains
 We will add the remaining code and instructions, as well as the data and more manipulation examples. 
 <!-- We will add the data and the evaluation process for the remaining test datasets, as well as the training procedure. These updates are expected to be completed before May 2024. -->
 
+## Update
+
+- :hugs: **2024/07/07**: Analytical-PyBullet hybrid part has been released.
+- 🎉 **2024/07/02**: QuasiSim is accpeted to ECCV 2024! 
+- :robot: **2024/05/17**: We've conducted real robot trajectory replay expeirments on an Allegro Hand to validate the real world applicability of QuasiSim. Check [the website](https://meowuu7.github.io/QuasiSim/) for videos. 
+- :rocket: **2024/04/15**: First version code released!
 
 ## Getting Started
 
@@ -494,6 +500,8 @@ If you find this code useful in your research, please cite:
 
 This code is standing on the shoulders of giants. We want to thank the following contributors
 that our code is based on: [DiffHand](https://github.com/eanswer/DiffHand), [NeuS](https://github.com/Totoro97/NeuS) and [ControlVAE](https://github.com/heyuanYao-pku/Control-VAE). 
+
+We thank Prof. Rui Chen, Yixuan Guan, and Taoran Jiang for their valuable support in providing the Allegro hardware and setting up the environment setup during the rebuttal period.
 
 ## License
 This code is distributed under an [MIT LICENSE](LICENSE).
