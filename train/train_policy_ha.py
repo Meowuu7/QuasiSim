@@ -1,98 +1,86 @@
 import os
-# import utils.pytorch_utils as ptu
 from ControlVAECore.Env.bullet_hoi_track_env import VCLODETrackEnv
-# from ControlVAECore.Env.analytical_hoi_track_env import VCLODETrackEnv as VCLODETrackEnvAna
 from ControlVAECore.Env.bullet_hoi_track_env_twohands import VCLODETrackEnv as VCLODETrackEnvAnaTwoHands
 import numpy as np
 import wandb
-# from diffusion import logger
 from utils.parser import train_policy_args
-# from utils.fix_seed import fixseed
 from train import control_vae_hoi_wana
 from train import control_vae_hoi_wana_twohands
 # from train import rl_ppo
 # from train.diffusion_policy import PolicyAgent
 # from utils.model_util import create_gaussian_diffusion
 
-# import hydra
-# from omegaconf import DictConfig, OmegaConf
-# from datetime import datetime
-# from omegaconf import open_dict
-# from isaacgymenvs.utils.reformat import omegaconf_to_dict, print_dict
-# from isaacgymenvs.utils.utils import set_np_formatting, set_seed
 
-
-##### Unorganized part #####
-# def launch_rlg_hydra():
+def launch_rlg_hydra():
     
+    cfg = load_hydra_conf("../isaacgymenvs/cfg", "config")
 
-    
-#     cfg = load_hydra_conf("../isaacgymenvs/cfg", "config")
+    import isaacgymenvs
+    from datetime import datetime
+    from omegaconf import open_dict
+    from isaacgymenvs.utils.reformat import omegaconf_to_dict, print_dict
+    from isaacgymenvs.utils.utils import set_np_formatting, set_seed
 
-
-#     import isaacgymenvs
-
-#     with open_dict(cfg):
-#         cfg.task.test = cfg.test
+    with open_dict(cfg):
+        cfg.task.test = cfg.test
         
-#     time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-#     run_name = f"{cfg.wandb_name}_{time_str}"
+    time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    run_name = f"{cfg.wandb_name}_{time_str}"
 
-#     # # ensure checkpoints can be specified as relative paths
-#     # if cfg.checkpoint:
-#     #     cfg.checkpoint = to_absolute_path(cfg.checkpoint)
+    # # ensure checkpoints can be specified as relative paths
+    # if cfg.checkpoint:
+    #     cfg.checkpoint = to_absolute_path(cfg.checkpoint)
 
-#     cfg_dict = omegaconf_to_dict(cfg)
-#     print_dict(cfg_dict)
+    cfg_dict = omegaconf_to_dict(cfg)
+    print_dict(cfg_dict)
 
-#     # set numpy formatting for printing only
-#     set_np_formatting()
+    # set numpy formatting for printing only
+    set_np_formatting()
 
-#     # global rank of the GPU
-#     global_rank = int(os.getenv("RANK", "0"))
+    # global rank of the GPU
+    global_rank = int(os.getenv("RANK", "0"))
 
-#     # sets seed. if seed is -1 will pick a random one
-#     cfg.seed = set_seed(cfg.seed, torch_deterministic=cfg.torch_deterministic, rank=global_rank)
+    # sets seed. if seed is -1 will pick a random one
+    cfg.seed = set_seed(cfg.seed, torch_deterministic=cfg.torch_deterministic, rank=global_rank)
     
     
-#     envs = isaacgymenvs.make(
-#         cfg.seed, 
-#         cfg.task_name, 
-#         cfg.task.env.numEnvs, 
-#         cfg.sim_device,
-#         cfg.rl_device,
-#         cfg.graphics_device_id,
-#         cfg.headless,
-#         cfg.multi_gpu,
-#         cfg.capture_video,
-#         cfg.force_render,
-#         cfg,
-#     )
-#     if cfg.capture_video:
-#         envs.is_vector_env = True
-#         envs = gym.wrappers.RecordVideo(
-#             envs,
-#             f"videos/{run_name}",
-#             step_trigger=lambda step: step % cfg.capture_video_freq == 0,
-#             video_length=cfg.capture_video_len,
-#         )
+    envs = isaacgymenvs.make(
+        cfg.seed, 
+        cfg.task_name, 
+        cfg.task.env.numEnvs, 
+        cfg.sim_device,
+        cfg.rl_device,
+        cfg.graphics_device_id,
+        cfg.headless,
+        cfg.multi_gpu,
+        cfg.capture_video,
+        cfg.force_render,
+        cfg,
+    )
+    if cfg.capture_video:
+        envs.is_vector_env = True
+        envs = gym.wrappers.RecordVideo(
+            envs,
+            f"videos/{run_name}",
+            step_trigger=lambda step: step % cfg.capture_video_freq == 0,
+            video_length=cfg.capture_video_len,
+        )
         
-#     act_dim = envs.num_hand_acts
-#     return envs
+    act_dim = envs.num_hand_acts
+    return envs
 
 
 
 
-# def load_hydra_conf(conf_path, conf_name="config"):
-#     from hydra import compose, initialize
-#     from omegaconf import OmegaConf
-#     with initialize(version_base=None, config_path=conf_path, job_name="test_app"):
-#         cfg = compose(config_name=conf_name, overrides=["db=mysql", "db.user=me"])
+def load_hydra_conf(conf_path, conf_name="config"):
+    from hydra import compose, initialize
+    from omegaconf import OmegaConf
+    with initialize(version_base=None, config_path=conf_path, job_name="test_app"):
+        cfg = compose(config_name=conf_name, overrides=["db=mysql", "db.user=me"])
 
-#     cfg = OmegaConf.to_yaml(cfg)
-#     return cfg
+    cfg = OmegaConf.to_yaml(cfg)
+    return cfg
 
-##### Unorganized part #####
 
 
 if __name__ == '__main__':
@@ -100,6 +88,7 @@ if __name__ == '__main__':
     if args['wandb']:
         wandb.init(project='Short')
         
+    ##### Unorganized part #####
     # if args['get_data_fns_from_objinfo']:
     #     if args['dataset_type'] == 'taco':
     #         CTL_ROOT = "/home/xueyi/diffsim/Control-VAE"
@@ -141,14 +130,12 @@ if __name__ == '__main__':
     # if args['use_ana']:
     #     env = VCLODETrackEnvAna(**args)
     # else:
-    # if args['use_isaac']:
-    #     print("Using isaac!")
-    #     # from isaacgymenvs.tasks.
-    #     env = launch_rlg_hydra()
+    if args['use_isaac']:
+        print("Using isaac!")
+        # from isaacgymenvs.tasks.
+        env = launch_rlg_hydra()
     # else:
-    
-    
-    if args['policy_model'] == 'control_vae_twohands':
+    elif args['policy_model'] == 'control_vae_twohands':
         env = VCLODETrackEnvAnaTwoHands(**args)   
     else:
         env = VCLODETrackEnv(**args)   
