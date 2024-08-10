@@ -515,7 +515,7 @@ If you find this code useful in your research, please cite:
 ## Acknowledgments
 
 This code is standing on the shoulders of giants. We want to thank the following contributors
-that our code is based on: [DiffHand](https://github.com/eanswer/DiffHand), [NeuS](https://github.com/Totoro97/NeuS) and [ControlVAE](https://github.com/heyuanYao-pku/Control-VAE). 
+that our code is based on: [DiffHand](https://github.com/eanswer/DiffHand), [NeuS](https://github.com/Totoro97/NeuS), [ControlVAE](https://github.com/heyuanYao-pku/Control-VAE), and [UniDexGrasp](https://github.com/PKU-EPIC/UniDexGrasp).
 
 We thank Prof. Rui Chen, Yixuan Guan, and Taoran Jiang for their valuable support in providing the Allegro hardware and setting up the environment setup during the rebuttal period.
 
