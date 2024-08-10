@@ -114,7 +114,6 @@ class PolicyAgent(nn.Module):
         self.mano_glb_trans = torch.from_numpy(self.mano_glb_trans).float().to(ptu.device)
         self.mano_states = torch.from_numpy(self.mano_states).float().to(ptu.device)
         
-        
         action_size = self.mano_glb_rot.size(1) + self.mano_glb_trans.size(1) + self.mano_states.size(1)
         
         self.tot_nn_frames = self.mano_glb_rot.size(0)
@@ -201,7 +200,6 @@ class PolicyAgent(nn.Module):
         
         
         if self.use_multi_ed:
-            
             if self.visualfeats_policy:
                 self.encoder_trans = VisualFeatsLearnablePriorEncoder(
                     input_size= self.observation_size,
@@ -242,8 +240,6 @@ class PolicyAgent(nn.Module):
                 ).to(ptu.device)
                 
             else:
-                
-            
                 self.encoder_trans = SimpleLearnablePriorEncoder(
                     input_size= self.observation_size,
                     condition_size= self.observation_size,
@@ -288,13 +284,13 @@ class PolicyAgent(nn.Module):
                         **kargs
                     ).to(ptu.device)
                 else:
-                    self.agent_rot = GatingMixedDecoder( # getting mixed decoder ## 
+                    self.agent_rot = GatingMixedDecoder(
                         # latent_size= kargs['latent_size'],
                         condition_size=self.observation_size,
                         output_size=3,
                         **kargs
                     ).to(ptu.device)
-                self.encoder_states = SimpleLearnablePriorEncoder(  # 
+                self.encoder_states = SimpleLearnablePriorEncoder(
                     input_size= self.observation_size,
                     condition_size= self.observation_size,
                     output_size= kargs['latent_size'],
@@ -445,7 +441,7 @@ class PolicyAgent(nn.Module):
         self.weight[f'weight_mano_trans'] = mano_tar_weight
         
         
-        # for real trajectory collection # collector # trajectory collector
+        # for real trajectory collection
         self.runner = TrajectorCollector(venv = env, actor = self, runner_with_noise = True, use_ana = self.use_ana)
         self.env = env    
         self.replay_buffer = ReplayBuffer(self.replay_buffer_keys, kargs['replay_buffer_size']) if mpi_rank ==0 else None
@@ -618,12 +614,9 @@ class PolicyAgent(nn.Module):
             self.load_parameters_for_sample(paramter)    
 
 
-    ## train one step ---- ##
     def train_one_step(self):
         
         time1 = time.perf_counter()
-        
-        # data used for training world model ## train world model ##
         
         ##### evaluate the world model and save ######
         # with torch.no_grad():
@@ -640,7 +633,7 @@ class PolicyAgent(nn.Module):
             self.update_policy()
         
         if mpi_rank ==  0:
-            ## mpi sync ## ## mpi sync ## ## eval one traj ##
+            ## mpi sync 
             evalulated_traj = self.runner.eval_one_traj(self) 
             # tag = f"mano_weight_001_cosrotloss_manotar_multied_{self.use_multi_ed}_lgobj_trajlen512_grabcamera_Trot_eu_lmass_ns_{self.bullet_nn_substeps}_bactv2_obm100_" 
             eval_sv_fn = f"evalulated_traj_sm_l512_wana_v3_{self.tag}_step_{self.i_step}_afcames.npy"
@@ -653,7 +646,7 @@ class PolicyAgent(nn.Module):
             
             name_list = self.world_model_data_name
             rollout_length = self.world_model_rollout_length
-            data_loader = self.replay_buffer.generate_data_loader(name_list,  # sample data from he replay buffer -> 
+            data_loader = self.replay_buffer.generate_data_loader(name_list, 
                                 rollout_length+1,
                                 self.world_model_batch_size, 
                                 self.sub_iter)
@@ -661,7 +654,7 @@ class PolicyAgent(nn.Module):
             for batch in  data_loader:
                 world_model_log = self.train_world_model(*batch)
                 
-                # world_model_log
+                
                 batch_idx += 1
         ## world model log ##
         time2 = time.perf_counter()
@@ -770,7 +763,7 @@ class PolicyAgent(nn.Module):
             # merge the training log...
             return self.merge_dict([world_model_log, policy_log], ['WM','Policy'])
         
-    def mpi_sync(self): ## mpi sync ## ## 
+    def mpi_sync(self):
         
         if mpi_rank ==  0:
             # evalulated_traj = self.runner.eval_one_traj(self)
@@ -783,10 +776,6 @@ class PolicyAgent(nn.Module):
             #     best_eval_sv_fn = "evalulated_traj_sm_l512_best_wana.npy" # 
             #     np.save(best_eval_sv_fn, evalulated_traj) # 
             #     print(f"best evaluated saved to {best_eval_sv_fn} with policy loss: {self.best_policy_loss}")
-            
-            
-            
-            
             
             ## mpi sync ##
             evalulated_traj = self.runner.eval_one_traj(self)
@@ -828,12 +817,11 @@ class PolicyAgent(nn.Module):
                 np.save(mpc_traj_sv_fn, mpc_traj)
                 print(f"MPC traj saved to {mpc_traj_sv_fn}")
                 ################# mpc eval #################
-            
-        ## sample 
-        ## 
+        
+        
         # sample trajectories #
-        if should_do_subprocess_task: ## 
-            with torch.no_grad(): #
+        if should_do_subprocess_task: 
+            with torch.no_grad():
                 ## path ##
                 # path : dict = self.runner.trajectory_sampling( math.floor(self.collect_size/max(1, mpi_world_size -1)), self )
                 # path : dict = self.runner.trajectory_sampling( 40, self ) # sample the trajectory # 
@@ -850,8 +838,8 @@ class PolicyAgent(nn.Module):
             path = {}
 
         tmp = np.zeros_like(self.env.val)
-        mpi_comm.Allreduce(self.env.val, tmp) ## 
-        self.env.val = tmp / mpi_world_size ## 
+        mpi_comm.Allreduce(self.env.val, tmp) 
+        self.env.val = tmp / mpi_world_size 
         self.env.update_p()
         
         print(f"mpi_world_size: {mpi_world_size}")
@@ -859,9 +847,9 @@ class PolicyAgent(nn.Module):
         res = gather_dict_ndarray(path)
         if mpi_rank == 0:
             
-            ### parameters for sample ###  # 
+            ### parameters for sample ###
             paramter = self.parameters_for_sample() 
-            mpi_comm.bcast(paramter, root = 0) # 
+            mpi_comm.bcast(paramter, root = 0)
             self.replay_buffer.add_trajectory(res)
             info = {
                 'rwd_mean': np.mean(res['rwd']),
@@ -1094,7 +1082,7 @@ class PolicyAgent(nn.Module):
         #     print(f"[act tracking] has NaN value in target") # fine grained manipulations
         
         n_target = self.normalize_obs(target)
-        n_observation = self.obsinfo2n_obs(obs_info) ## ## # observation ## three such networks ##
+        n_observation = self.obsinfo2n_obs(obs_info) 
         
         if self.use_multi_ed:
             if self.traj_opt:
@@ -1241,15 +1229,7 @@ class PolicyAgent(nn.Module):
         
         return action, info
     
-    # def act_prior(self, obs_info):
-    #     """
-    #     try to track reference motion
-    #     """
-    #     n_observation = self.obsinfo2n_obs(obs_info)
-    #     latent_code, mu_prior, logvar = self.encoder.encode_prior(n_observation)
-    #     action = self.decode(n_observation, latent_code)
-        
-    #     return action
+    
     
     #----------------------------------API imitate PPO--------------------------------#
     def act_determinastic(self, obs_info):
@@ -1277,7 +1257,7 @@ class PolicyAgent(nn.Module):
             action_distribution = D.Independent(D.Normal(action, self.action_sigma), -1)
         return action_distribution
     
-    ## action distribution ## # # action distribution # #
+    ## action distribution ##
     #--------------------------------------Utils--------------------------------------#
     @staticmethod
     def merge_dict(dict_list: List[dict], prefix: List[str]):
@@ -1577,7 +1557,7 @@ class PolicyAgent(nn.Module):
         
         ## sumof the loss value ###
         # discount_factor = 0.95 # 
-        discount_factor = 1.0 # 
+        discount_factor = 1.0
         # discount_factor = 0.90
         # loss_value = [ sum( (0.95**i)*l[i] for i in range(rollout_length) )/rollout_length for l in loss] # loss in ##
         loss_value = [ sum( (discount_factor**i)*l[i] for i in range(rollout_length) )/rollout_length for l in loss]

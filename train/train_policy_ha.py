@@ -27,10 +27,7 @@ def launch_rlg_hydra():
     time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     run_name = f"{cfg.wandb_name}_{time_str}"
 
-    # # ensure checkpoints can be specified as relative paths
-    # if cfg.checkpoint:
-    #     cfg.checkpoint = to_absolute_path(cfg.checkpoint)
-
+    
     cfg_dict = omegaconf_to_dict(cfg)
     print_dict(cfg_dict)
 
@@ -40,7 +37,7 @@ def launch_rlg_hydra():
     # global rank of the GPU
     global_rank = int(os.getenv("RANK", "0"))
 
-    # sets seed. if seed is -1 will pick a random one
+
     cfg.seed = set_seed(cfg.seed, torch_deterministic=cfg.torch_deterministic, rank=global_rank)
     
     
@@ -125,16 +122,9 @@ if __name__ == '__main__':
     #     else:
     #         raise NotImplementedError("Not implemented yet!")
             
-            
     
-    # if args['use_ana']:
-    #     env = VCLODETrackEnvAna(**args)
-    # else:
     if args['use_isaac']:
-        print("Using isaac!")
-        # from isaacgymenvs.tasks.
         env = launch_rlg_hydra()
-    # else:
     elif args['policy_model'] == 'control_vae_twohands':
         env = VCLODETrackEnvAnaTwoHands(**args)   
     else:
@@ -149,8 +139,6 @@ if __name__ == '__main__':
         raise NotImplementedError
     
     nn_obs = env.bullet_mano_num_joints + 3 + 4
-
-    
     nn_act = env.bullet_mano_num_joints
     nn_delta = env.bullet_mano_num_joints + 3 + 3
     

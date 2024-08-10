@@ -80,21 +80,11 @@ def plane_rotation_matrix_from_angle_xz(angle):
     return rot_mtx
 
 
-# # runner # # # runner # 
 class Runner:
     def __init__(self, conf_path, mode='train', case='CASE_NAME', is_continue=False):
         self.device = torch.device('cuda')
 
-        # if 'ks' in conf_path:
-        #     import taichi as ti
-            
-        #     ti.init(arch=ti.cuda, device_memory_GB=40.0)
-            
-        #     # uuu = ti.field(dtype=ti.f32, shape=(4e10, 1))
-            
-        #     uuu = ti.field(ti.f32)
-        #     ti.root.dense(ti.i, 4e5).place(uuu)
-        
+    
         # Configuration
         self.conf_path = conf_path
         f = open(self.conf_path)
@@ -106,27 +96,20 @@ class Runner:
         self.conf['dataset.data_dir'] = self.conf['dataset.data_dir'].replace('CASE_NAME', case)
         self.base_exp_dir = self.conf['general.base_exp_dir']
         
-        # local_exp_dir = "/data2/xueyi/quasisim/exp/"
-        local_exp_dir = "/data/xueyi/quasisim/exp"
+        
+        local_exp_dir = "./exp"
         if os.path.exists(local_exp_dir):
             self.base_exp_dir = local_exp_dir
         
         
         self.base_exp_dir = self.base_exp_dir + f"_reverse_value_totviews_tag_{self.conf['general.tag']}"
         os.makedirs(self.base_exp_dir, exist_ok=True)
-        # self.dataset = Dataset(self.conf['dataset']) # base exp dirs # # base exp dirs # ---- base exp dirs # # base exp dirs # 
-        
         # self.n_timesteps = 10
-        self.n_timesteps = self.conf['model.n_timesteps'] ## n_timesteps -> give the n_timesteps # 
-        # self.time_idx_to_dataset = {}
-        # for i_time_idx in range(self.n_timesteps):
-        #     cur_time_dataset = Dataset(self.conf['dataset'], time_idx=i_time_idx, mode=mode)
-        #     self.time_idx_to_dataset[i_time_idx] = cur_time_dataset
-        
+        self.n_timesteps = self.conf['model.n_timesteps']
         
         self.iter_step = 0
 
-        # Training parameters # # NeuS #
+
         self.end_iter = self.conf.get_int('train.end_iter')
         self.save_freq = self.conf.get_int('train.save_freq')
         self.report_freq = self.conf.get_int('train.report_freq')
@@ -142,34 +125,26 @@ class Runner:
         self.anneal_end = self.conf.get_float('train.anneal_end', default=0.0)
         
         self.use_bending_network = True
-        # use_split_network
         self.use_selector = True
 
 
-        # Weights # 
-        self.igr_weight = self.conf.get_float('train.igr_weight') # what is igr_weight? # # what is igr_weight # 
-        self.mask_weight = self.conf.get_float('train.mask_weight') # what is mask weight? # # perhaps.. #
+        # Weights
+        self.igr_weight = self.conf.get_float('train.igr_weight')  
+        self.mask_weight = self.conf.get_float('train.mask_weight')
         self.is_continue = is_continue # 
         self.mode = mode
         self.model_list = []
         self.writer = None
         
-        # self.bending_latent = nn.Embedding(
-        #     num_embeddings=self.bending_n_timesteps, embedding_dim=self.bending_latent_size
-        # ) # 
         self.bending_latent_size = self.conf['model.bending_network']['bending_latent_size']
-        # self.bending_latent_size = 
 
         # Networks
         params_to_train = []
         self.nerf_outside = NeRF(**self.conf['model.nerf']).to(self.device)
         self.sdf_network = SDFNetwork(**self.conf['model.sdf_network']).to(self.device)
         self.deviation_network = SingleVarianceNetwork(**self.conf['model.variance_network']).to(self.device)
-        self.color_network = RenderingNetwork(**self.conf['model.rendering_network']).to(self.device) # rendering network # 
+        self.color_network = RenderingNetwork(**self.conf['model.rendering_network']).to(self.device)
         
-        # self.use_bending_network = self.conf['model.use_bending_network']
-        # # bending network size #
-        # if self.use_bending_network:  # add the bendingnetwork #
         self.bending_network = BendingNetwork(**self.conf['model.bending_network']).to(self.device)
         
         
@@ -181,9 +156,6 @@ class Runner:
         
         self.extract_delta_mesh = self.conf['model.extract_delta_mesh']
         
-        
-        # # bending_net_type = "pts_def" # 
-        # bending_net_type = "rigid_acc" # 
         
         self.use_passive_nets = self.conf['model.use_passive_nets']
         if 'model.bending_net_type' in self.conf:
@@ -231,8 +203,6 @@ class Runner:
             self.with_finger_tracking_loss = True
 
 
-        #### loss types ###
-        # finger_cd_loss_coef, finger_tracking_loss_coef, tracking_loss_coef, penetrating_depth_penalty_coef # 
         if 'model.finger_cd_loss' in self.conf:
             self.finger_cd_loss_coef = self.conf['model.finger_cd_loss']
         else:
@@ -278,11 +248,6 @@ class Runner:
             
             
         if 'model.optimize_expanded_pts' in self.conf:
-            # print(f"Setting optimizing expanded pts...") # optimize expanded pts or optimize 
-            # params_to_train = []
-            # params_to_train += list(self.mano_expanded_actuator_delta_offset.parameters())
-            # params_to_train += list(self.mano_expanded_actuator_friction_forces.parameters())
-            # self.optimize_expanded_pts = True
             self.optimize_expanded_pts = self.conf['model.optimize_expanded_pts']
         else:
             self.optimize_expanded_pts = True
@@ -310,7 +275,7 @@ class Runner:
             self.train_with_forces_to_active = False
             
             
-        if 'model.loss_weight_diff_states' in self.conf: # conf #
+        if 'model.loss_weight_diff_states' in self.conf:
             self.loss_weight_diff_states = self.conf['model.loss_weight_diff_states']
         else:
             self.loss_weight_diff_states = 1.
@@ -553,8 +518,6 @@ class Runner:
         else:
             self.ckpt_sv_freq = 100
         
-        # optm_alltime_ks
-        #  # optimizable_spring_ks_normal, optimizable_spring_ks_friction #
         if 'model.optm_alltime_ks' in self.conf:
             self.optm_alltime_ks = self.conf['model.optm_alltime_ks']
         else:
